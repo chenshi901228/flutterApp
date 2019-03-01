@@ -6,7 +6,7 @@ class SerchInputPage extends StatelessWidget {
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil(width: 375, height: 667)..init(context);
     return Container(
-        height: ScreenUtil().setHeight(44),
+        height: ScreenUtil().setWidth(44),
         color: Colors.white,
         padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(10)),
         child: Row(
@@ -18,7 +18,7 @@ class SerchInputPage extends StatelessWidget {
               width: ScreenUtil().setWidth(300),
               child: Material(
                   borderRadius:
-                      BorderRadius.circular(ScreenUtil().setHeight(15)),
+                      BorderRadius.circular(ScreenUtil().setWidth(15)),
                   color: Color.fromRGBO(155, 155, 155, 0.5),
                   child: Stack(
                     children: <Widget>[
@@ -31,17 +31,17 @@ class SerchInputPage extends StatelessWidget {
                                   fontSize: ScreenUtil().setSp(12),
                                   color: Color.fromRGBO(155, 155, 155, 1)),
                               contentPadding: EdgeInsets.only(
-                                  top: ScreenUtil().setHeight(6),
-                                  bottom: ScreenUtil().setHeight(6),
-                                  left: ScreenUtil().setHeight(40)),
+                                  top: ScreenUtil().setWidth(6),
+                                  bottom: ScreenUtil().setWidth(6),
+                                  left: ScreenUtil().setWidth(40)),
                               border: InputBorder.none)),
                       Positioned(
                         left: ScreenUtil().setWidth(10),
-                        top: ScreenUtil().setHeight(6),
+                        top: ScreenUtil().setWidth(6),
                         child: Image.asset(
                           "images/icon/serch.png",
                           width: ScreenUtil().setWidth(20),
-                          height: ScreenUtil().setHeight(20),
+                          height: ScreenUtil().setWidth(20),
                         ),
                       )
                     ],

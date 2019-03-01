@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../utils/routes.dart';
+
 import '../../component/myAddress/addressItem.dart';
 
 class MyAddressPage extends StatefulWidget {
@@ -60,7 +62,7 @@ class _MyAddressState extends State<MyAddressPage> {
                 alignment: Alignment.center,
                 child: GestureDetector(
                   onTap: () {
-                    print("新地址");
+                    Routes.router.navigateTo(context, "/addAddressPage");
                   },
                   child: Text(
                     "添加新地址",

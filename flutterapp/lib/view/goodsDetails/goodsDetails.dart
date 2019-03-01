@@ -103,7 +103,7 @@ class _GoodsDetailsState extends State<GoodsDetailsPage> {
                   height: ScreenUtil().setWidth(30),
                 ),
                 onPressed: () {
-                  Navigator.pop(context);
+                  print("分享");
                 },
               )
             ],

@@ -19,9 +19,9 @@ class _MustBuyState extends State<MustBuyComponent> {
         },
         child: Container(
           width: ScreenUtil().setWidth(245),
-          // height: ScreenUtil().setHeight(103),
+          // height: ScreenUtil().setWidth(103),
           margin: EdgeInsets.only(right: ScreenUtil().setWidth(8)),
-          padding: EdgeInsets.all(ScreenUtil().setHeight(10)),
+          padding: EdgeInsets.all(ScreenUtil().setWidth(10)),
           decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(ScreenUtil().setWidth(2))),
@@ -81,12 +81,12 @@ class _MustBuyState extends State<MustBuyComponent> {
 
     return Container(
       color: Color.fromRGBO(209, 209, 209, 1),
-      padding: EdgeInsets.all(ScreenUtil().setHeight(10)),
-      height: ScreenUtil().setHeight(158),
+      padding: EdgeInsets.all(ScreenUtil().setWidth(10)),
+      height: ScreenUtil().setWidth(158),
       child: Column(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(bottom: ScreenUtil().setHeight(10)),
+            padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(10)),
             child: Text("必买好货",
                 style: TextStyle(
                     fontSize: ScreenUtil().setSp(14), color: Colors.black)),

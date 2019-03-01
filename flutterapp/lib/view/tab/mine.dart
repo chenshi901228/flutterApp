@@ -7,7 +7,12 @@ import '../../component/mine/myOrder.dart';
 import '../../component/mine/partner.dart';
 import '../../component/mine/dividend.dart';
 
-class MinePage extends StatelessWidget {
+class MinePage extends StatefulWidget {
+  @override
+  _MineState createState() => new _MineState();
+}
+
+class _MineState extends State<MinePage> {
   @override
   Widget build(BuildContext context) {
     return ListView(

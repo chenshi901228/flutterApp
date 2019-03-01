@@ -11,9 +11,9 @@ class _LastTimeState extends State<LastTimeComponent> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
-          top: ScreenUtil().setHeight(8), bottom: ScreenUtil().setHeight(5)),
+          top: ScreenUtil().setWidth(8), bottom: ScreenUtil().setWidth(5)),
       color: Color.fromRGBO(238, 238, 238, 1),
-      // height: ScreenUtil().setHeight(100),
+      // height: ScreenUtil().setWidth(100),
       child: Column(
         children: <Widget>[
           Text(

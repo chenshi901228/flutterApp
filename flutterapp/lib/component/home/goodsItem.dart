@@ -47,7 +47,7 @@ class _GoodsItemState extends State<GoodsItemComponent> {
           padding: EdgeInsets.all(ScreenUtil().setWidth(8)),
           child: Wrap(
             alignment: WrapAlignment.spaceBetween,
-            runSpacing: ScreenUtil().setHeight(3),
+            runSpacing: ScreenUtil().setWidth(3),
             children: <Widget>[
               good(),
               good(),

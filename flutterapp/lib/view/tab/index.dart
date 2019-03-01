@@ -34,7 +34,7 @@ class _IndexState extends State<IndexPage> {
             Image.asset(
               img,
               width: ScreenUtil().setWidth(21),
-              height: ScreenUtil().setHeight(21),
+              height: ScreenUtil().setWidth(21),
             ),
             Text(
               text,
@@ -48,21 +48,12 @@ class _IndexState extends State<IndexPage> {
     return Scaffold(
         backgroundColor: Color.fromRGBO(241, 241, 241, 1),
         resizeToAvoidBottomPadding: false,
-        appBar: PreferredSize(
-          child: SafeArea(
-            top: true,
-            child: Text(""),
-          ),
-          preferredSize: Size.fromHeight(0),
-        ),
-        body: Container(
-          child: _renderItem[_tabIndex],
-        ),
+        body: _renderItem[_tabIndex],
         bottomNavigationBar: BottomAppBar(
           child: Container(
             padding:
                 EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(40)),
-            height: ScreenUtil().setHeight(49),
+            height: ScreenUtil().setWidth(49),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[

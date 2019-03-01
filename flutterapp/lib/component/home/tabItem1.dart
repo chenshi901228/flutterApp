@@ -16,8 +16,10 @@ class TabItem1Component extends StatefulWidget {
   _TabItem1State createState() => new _TabItem1State();
 }
 
-class _TabItem1State extends State<TabItem1Component> {
+class _TabItem1State extends State<TabItem1Component> with AutomaticKeepAliveClientMixin {
   final ScrollController _scrollController = ScrollController();
+  @override
+  bool get wantKeepAlive => true;
   @override
   void initState() {
     _scrollController.addListener(() {
@@ -28,8 +30,8 @@ class _TabItem1State extends State<TabItem1Component> {
       }
     });
     eventBus.on<HandleTop>().listen((e) {
-      _scrollController.animateTo(0,
-          duration: Duration(seconds: 2), curve: Curves.easeInOutSine);
+      _scrollController.animateTo(0.0,
+          duration: Duration(seconds: 2), curve: Curves.easeInCirc);
     });
     super.initState();
   }

@@ -19,6 +19,8 @@ import '../view/earningsReport/balanceOfAccount.dart'; //账户余额
 import '../view/setting/setting.dart'; //设置
 import '../view/setting/personalData.dart'; //个人资料
 import '../view/setting/modifyNickname.dart'; //修改昵称
+import '../view/myAddress/addAddress.dart'; //添加新地址
+import '../view/myAddress/editAddress.dart'; //编辑收货地址
 
 class Routes {
   static Router router;
@@ -42,6 +44,8 @@ class Routes {
   static String settingPage = '/settingPage';
   static String personalDataPage = '/personalDataPage';
   static String modifyNicknamePage = '/modifyNicknamePage';
+  static String addAddressPage = '/addAddressPage';
+  static String editAddressPage = '/editAddressPage';
 
   static void configureRoutes(Router router) {
     router.define(loginPage,
@@ -92,7 +96,12 @@ class Routes {
     router.define(personalDataPage,
         handler: Handler(handlerFunc: (context, params) => PersonalDataPage()));
     router.define(modifyNicknamePage,
-        handler: Handler(handlerFunc: (context, params) => ModifyNicknamePage()));
+        handler:
+            Handler(handlerFunc: (context, params) => ModifyNicknamePage()));
+    router.define(addAddressPage,
+        handler: Handler(handlerFunc: (context, params) => AddAddressPage()));
+    router.define(editAddressPage,
+        handler: Handler(handlerFunc: (context, params) => EditAddressPage()));
     Routes.router = router;
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../utils/routes.dart';
+
 class AddressItemComponent extends StatefulWidget {
   AddressItemComponent({Key key, this.data}) : super(key: key);
   final data;
@@ -13,7 +15,7 @@ class _AddressItemState extends State<AddressItemComponent> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        print("编辑收货地址");
+        Routes.router.navigateTo(context, "/editAddressPage");
       },
       child: Container(
         color: Colors.white,

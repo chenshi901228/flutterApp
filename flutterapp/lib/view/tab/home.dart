@@ -12,16 +12,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomeState extends State<HomePage> {
+  bool topButton = true;
   void initState() {
     eventBus.on<GoTop>().listen((e) {
-      setState(() {
-        topButton = e.goTop;
-      });
+      if (mounted) {
+        setState(() {
+          topButton = e.goTop;
+        });
+      }else{
+        return;
+      }
     });
     super.initState();
   }
 
-  bool topButton = true;
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil(width: 375, height: 667)..init(context);
@@ -48,8 +52,8 @@ class _HomeState extends State<HomePage> {
                 backgroundColor: Colors.white,
                 leading: Padding(
                     padding: EdgeInsets.only(
-                        top: ScreenUtil().setHeight(12),
-                        bottom: ScreenUtil().setHeight(12),
+                        top: ScreenUtil().setWidth(12),
+                        bottom: ScreenUtil().setWidth(12),
                         left: ScreenUtil().setWidth(10)),
                     child: GestureDetector(
                       onTap: () {},
@@ -64,8 +68,8 @@ class _HomeState extends State<HomePage> {
                   width: ScreenUtil().setWidth(300),
                   child: Material(
                       borderRadius:
-                          BorderRadius.circular(ScreenUtil().setHeight(15)),
-                      color: Color.fromRGBO(155, 155, 155, 0.5),
+                          BorderRadius.circular(ScreenUtil().setWidth(15)),
+                      color: Color.fromRGBO(220, 220, 220, 1),
                       child: Stack(
                         children: <Widget>[
                           TextField(
@@ -77,17 +81,17 @@ class _HomeState extends State<HomePage> {
                                       fontSize: ScreenUtil().setSp(12),
                                       color: Color.fromRGBO(155, 155, 155, 1)),
                                   contentPadding: EdgeInsets.only(
-                                      top: ScreenUtil().setHeight(6),
-                                      bottom: ScreenUtil().setHeight(6),
-                                      left: ScreenUtil().setHeight(40)),
+                                      top: ScreenUtil().setWidth(6),
+                                      bottom: ScreenUtil().setWidth(6),
+                                      left: ScreenUtil().setWidth(40)),
                                   border: InputBorder.none)),
                           Positioned(
                             left: ScreenUtil().setWidth(10),
-                            top: ScreenUtil().setHeight(6),
+                            top: ScreenUtil().setWidth(6),
                             child: Image.asset(
                               "images/icon/serch.png",
                               width: ScreenUtil().setWidth(20),
-                              height: ScreenUtil().setHeight(20),
+                              height: ScreenUtil().setWidth(20),
                             ),
                           )
                         ],
@@ -95,7 +99,7 @@ class _HomeState extends State<HomePage> {
                 ),
                 elevation: 1,
                 bottom: TabBar(
-                  indicatorWeight: ScreenUtil().setHeight(2),
+                  indicatorWeight: ScreenUtil().setWidth(2),
                   indicatorColor: Color.fromRGBO(255, 77, 0, 1),
                   indicatorSize: TabBarIndicatorSize.label,
                   unselectedLabelColor: Colors.black,

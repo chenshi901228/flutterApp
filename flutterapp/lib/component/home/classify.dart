@@ -50,11 +50,11 @@ class _ClassifyState extends State<ClassifyComponent> {
         color: Colors.white,
         // height: ScreenUtil().setHeight(186),
         padding: EdgeInsets.symmetric(
-            vertical: ScreenUtil().setHeight(20),
-            horizontal: ScreenUtil().setHeight(20)),
+            vertical: ScreenUtil().setWidth(20),
+            horizontal: ScreenUtil().setWidth(20)),
         child: Wrap(
             alignment: WrapAlignment.spaceBetween,
-            runSpacing: ScreenUtil().setHeight(10),
+            runSpacing: ScreenUtil().setWidth(10),
             spacing: ScreenUtil().setWidth(21),
             children: _classifys.map((item) {
               return classifyItem(item);
