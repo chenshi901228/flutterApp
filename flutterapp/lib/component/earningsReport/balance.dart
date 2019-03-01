@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../utils/routes.dart';
 
 class BalanceComponent extends StatelessWidget {
   @override
@@ -20,7 +21,9 @@ class BalanceComponent extends StatelessWidget {
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(30), color: Colors.white)),
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Routes.router.navigateTo(context, "/balanceOfAccountPage");
+            },
             child: Container(
               margin: EdgeInsets.only(top: ScreenUtil().setWidth(12)),
               padding: EdgeInsets.symmetric(

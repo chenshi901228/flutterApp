@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../utils/routes.dart';
+
 class UserInfoComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -110,7 +112,7 @@ class UserInfoComponent extends StatelessWidget {
           top: ScreenUtil().setWidth(15),
           child: GestureDetector(
             onTap: () {
-              print("setting");
+              Routes.router.navigateTo(context, "/settingPage");
             },
             child: Image.asset(
               "images/icon/setting.png",

@@ -1,7 +1,7 @@
 import 'package:fluro/fluro.dart';
-import '../view/login_reg/login.dart';
-import '../view/login_reg/forget.dart';
-import '../view/login_reg/reg.dart';
+import '../view/login_reg/login.dart'; //登录界面
+import '../view/login_reg/forget.dart'; //忘记密码
+import '../view/login_reg/reg.dart'; //注册
 import '../view/tab/index.dart'; //首页
 import '../view/classify/classify.dart'; //分类商品
 import '../view/goodsDetails/goodsDetails.dart'; //商品详情
@@ -14,6 +14,11 @@ import '../view/myFans/myFans.dart'; //我的粉丝
 import '../view/checkLogistics/checkLogistics.dart'; //查看物流
 import '../view/earningsReport/earningsReport.dart'; //收益报表
 import '../view/earningsReport/orderClear.dart'; //订单结算明细
+import '../view/earningsReport/withdrawalRecord.dart'; //提现记录
+import '../view/earningsReport/balanceOfAccount.dart'; //账户余额
+import '../view/setting/setting.dart'; //设置
+import '../view/setting/personalData.dart'; //个人资料
+import '../view/setting/modifyNickname.dart'; //修改昵称
 
 class Routes {
   static Router router;
@@ -32,6 +37,11 @@ class Routes {
   static String checkLogisticsPage = '/checkLogisticsPage';
   static String earningsReportPage = '/earningsReportPage';
   static String orderClearPage = '/orderClearPage';
+  static String withdrawalRecordPage = '/withdrawalRecordPage';
+  static String balanceOfAccountPage = '/balanceOfAccountPage';
+  static String settingPage = '/settingPage';
+  static String personalDataPage = '/personalDataPage';
+  static String modifyNicknamePage = '/modifyNicknamePage';
 
   static void configureRoutes(Router router) {
     router.define(loginPage,
@@ -71,6 +81,18 @@ class Routes {
             Handler(handlerFunc: (context, params) => EarningsReportPage()));
     router.define(orderClearPage,
         handler: Handler(handlerFunc: (context, params) => OrderClearPage()));
+    router.define(withdrawalRecordPage,
+        handler:
+            Handler(handlerFunc: (context, params) => WithdrawalRecordPage()));
+    router.define(balanceOfAccountPage,
+        handler: Handler(
+            handlerFunc: (context, params) => BalanceOfAccountPagePage()));
+    router.define(settingPage,
+        handler: Handler(handlerFunc: (context, params) => SettingPage()));
+    router.define(personalDataPage,
+        handler: Handler(handlerFunc: (context, params) => PersonalDataPage()));
+    router.define(modifyNicknamePage,
+        handler: Handler(handlerFunc: (context, params) => ModifyNicknamePage()));
     Routes.router = router;
   }
 }

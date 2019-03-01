@@ -1,22 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class OrderClearPage extends StatefulWidget {
+class WithdrawalRecordPage extends StatefulWidget {
   @override
-  _OrderClearState createState() => new _OrderClearState();
+  WwithdrawalRecordState createState() => new WwithdrawalRecordState();
 }
 
-class _OrderClearState extends State<OrderClearPage> {
+class WwithdrawalRecordState extends State<WithdrawalRecordPage> {
   final List _list = [
-    {"title": "直属粉丝邀请订单", "name": "800股", "date": "2018-11-25", "money": 240},
-    {
-      "title": "直属粉丝订单奖励",
-      "name": "1000元现金奖励",
-      "date": "2018-11-22",
-      "money": 1000
-    },
-    {"title": "直属粉丝订单", "name": "1500股", "date": "2018-11-22", "money": 450},
-    {"title": "自购订单", "name": "10000股", "date": "2018-10-28", "money": 3000}
+    {"title": "支付宝", "date": "2018-11-25", "money": 240},
+    {"title": "支付宝", "date": "2018-11-22", "money": 1000}
   ];
   @override
   Widget build(BuildContext context) {
@@ -37,7 +30,7 @@ class _OrderClearState extends State<OrderClearPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  data["title"],
+                  "提现到${data["title"]}",
                   style: TextStyle(
                       fontSize: ScreenUtil().setSp(14),
                       color: Color.fromRGBO(74, 74, 74, 1)),
@@ -46,7 +39,7 @@ class _OrderClearState extends State<OrderClearPage> {
                   height: ScreenUtil().setWidth(3),
                 ),
                 Text(
-                  data["name"],
+                  data["date"],
                   style: TextStyle(
                       fontSize: ScreenUtil().setSp(12),
                       color: Color.fromRGBO(153, 153, 153, 1)),
@@ -56,17 +49,11 @@ class _OrderClearState extends State<OrderClearPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                Text(
-                  data["date"],
-                  style: TextStyle(
-                      fontSize: ScreenUtil().setSp(12),
-                      color: Color.fromRGBO(153, 153, 153, 1)),
-                ),
                 SizedBox(
                   height: ScreenUtil().setWidth(3),
                 ),
                 Text(
-                  "+${data["money"]}元",
+                  "-${data["money"]}元",
                   style: TextStyle(
                       fontSize: ScreenUtil().setSp(14),
                       color: Color.fromRGBO(74, 74, 74, 1)),
@@ -102,7 +89,7 @@ class _OrderClearState extends State<OrderClearPage> {
               },
             ),
             title: Text(
-              "订单结算明细",
+              "提现记录",
               style: TextStyle(
                   fontSize: ScreenUtil().setWidth(16),
                   color: Color.fromRGBO(51, 51, 51, 1)),
@@ -128,7 +115,7 @@ class _OrderClearState extends State<OrderClearPage> {
                             style: TextStyle(
                                 fontSize: ScreenUtil().setSp(13),
                                 color: Color.fromRGBO(102, 102, 102, 1))),
-                        Text("累计收益：¥4690.00",
+                        Text("累计提现：¥4690.00",
                             style: TextStyle(
                                 fontSize: ScreenUtil().setSp(12),
                                 color: Color.fromRGBO(153, 153, 153, 1)))

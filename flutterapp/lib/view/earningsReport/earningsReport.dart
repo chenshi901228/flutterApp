@@ -56,6 +56,7 @@ class _EarningsReportState extends State<EarningsReportPage> {
           ),
           new ItemComponent(
             title: "提现记录",
+            route: "/withdrawalRecordPage",
           ),
         ],
       ),

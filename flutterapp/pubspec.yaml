@@ -91,6 +91,7 @@ flutter:
    - images/icon/fansbtn.png
    - images/icon/fansbtn_1.png
    - images/icon/questions.png
+   - images/icon/clean.png
    
 
   # An image asset can refer to one or more resolution-specific "variants", see
