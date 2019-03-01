@@ -1,0 +1,76 @@
+import 'package:fluro/fluro.dart';
+import '../view/login_reg/login.dart';
+import '../view/login_reg/forget.dart';
+import '../view/login_reg/reg.dart';
+import '../view/tab/index.dart'; //首页
+import '../view/classify/classify.dart'; //分类商品
+import '../view/goodsDetails/goodsDetails.dart'; //商品详情
+import '../view/store/store.dart'; //店铺页面
+import '../view/confirmOrder/confirmOrder.dart'; //确认订单
+import '../view/myAddress/myAddress.dart'; //我的收货地址
+import '../view/order/order.dart'; //订单页
+import '../view/dividendCenter/dividendCenter.dart'; //分红中心
+import '../view/myFans/myFans.dart'; //我的粉丝
+import '../view/checkLogistics/checkLogistics.dart'; //查看物流
+import '../view/earningsReport/earningsReport.dart'; //收益报表
+import '../view/earningsReport/orderClear.dart'; //订单结算明细
+
+class Routes {
+  static Router router;
+  static String loginPage = "/";
+  static String forgetPassWordPage = '/forgetPassWordPage';
+  static String regPage = '/regPage';
+  static String indexPage = '/indexPage';
+  static String classIfyPage = '/classIfyPage';
+  static String goodsDetailsPage = '/goodsDetailsPage';
+  static String storePage = '/storePage';
+  static String confirmOrderPage = '/confirmOrderPage';
+  static String myAddressPage = '/myAddressPage';
+  static String orderPage = '/orderPage';
+  static String dividendCenterPage = '/dividendCenterPage';
+  static String myFansPage = '/myFansPage';
+  static String checkLogisticsPage = '/checkLogisticsPage';
+  static String earningsReportPage = '/earningsReportPage';
+  static String orderClearPage = '/orderClearPage';
+
+  static void configureRoutes(Router router) {
+    router.define(loginPage,
+        handler: Handler(handlerFunc: (context, params) => Login()));
+    router.define(forgetPassWordPage,
+        handler:
+            Handler(handlerFunc: (context, params) => ForgetPassWordPage()));
+    router.define(regPage,
+        handler: Handler(handlerFunc: (context, params) => RegPage()));
+    router.define(indexPage,
+        handler: Handler(handlerFunc: (context, params) => IndexPage()));
+    router.define(classIfyPage,
+        handler: Handler(handlerFunc: (context, params) => ClassIfyPage()));
+    router.define(goodsDetailsPage,
+        handler: Handler(handlerFunc: (context, params) => GoodsDetailsPage()));
+    router.define(storePage,
+        handler: Handler(handlerFunc: (context, params) => StorePage()));
+    router.define(confirmOrderPage,
+        handler: Handler(handlerFunc: (context, params) => ConfirmOrderPage()));
+    router.define(myAddressPage,
+        handler: Handler(handlerFunc: (context, params) => MyAddressPage()));
+    router.define(orderPage, handler: Handler(handlerFunc: (context, params) {
+      var initIndex = params["initIndex"]?.first;
+      var selfOrFans = params["selfOrFans"]?.first;
+      return OrderPage(int.parse(initIndex), selfOrFans);
+    }));
+    router.define(dividendCenterPage,
+        handler:
+            Handler(handlerFunc: (context, params) => DividendCenterPage()));
+    router.define(myFansPage,
+        handler: Handler(handlerFunc: (context, params) => MyFansPage()));
+    router.define(checkLogisticsPage,
+        handler:
+            Handler(handlerFunc: (context, params) => CheckLogisticsPage()));
+    router.define(earningsReportPage,
+        handler:
+            Handler(handlerFunc: (context, params) => EarningsReportPage()));
+    router.define(orderClearPage,
+        handler: Handler(handlerFunc: (context, params) => OrderClearPage()));
+    Routes.router = router;
+  }
+}
