@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LastTimeComponent extends StatefulWidget {
@@ -7,6 +8,41 @@ class LastTimeComponent extends StatefulWidget {
 }
 
 class _LastTimeState extends State<LastTimeComponent> {
+  var timer;
+  var lastTimeShow;
+  DateTime lastTime = DateTime.parse("2019-03-04 15:00:00");
+
+  void initState() {
+    setState(() {
+      if (lastTime.isAfter(DateTime.now())) {
+        lastTimeShow = lastTime.difference(DateTime.now()).toString().substring(
+            0, lastTime.difference(DateTime.now()).toString().indexOf("."));
+        timer = Timer.periodic(Duration(seconds: 1), (timer) {
+          setState(() {
+            lastTimeShow = lastTime
+                .difference(DateTime.now())
+                .toString()
+                .substring(
+                    0,
+                    lastTime
+                        .difference(DateTime.now())
+                        .toString()
+                        .indexOf("."));
+          });
+        });
+      } else {
+        lastTimeShow = "00:00:00";
+      }
+    });
+    super.initState();
+  }
+
+  void dispose() {
+    timer?.cancel();
+    timer = null;
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,7 +59,7 @@ class _LastTimeState extends State<LastTimeComponent> {
                 color: Color.fromRGBO(155, 155, 155, 1)),
           ),
           Text(
-            "02:58",
+            lastTimeShow.toString(),
             style: TextStyle(
                 fontSize: ScreenUtil().setSp(36),
                 color: Color.fromRGBO(255, 77, 0, 1)),

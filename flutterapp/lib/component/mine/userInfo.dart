@@ -10,9 +10,9 @@ class UserInfoComponent extends StatelessWidget {
       children: <Widget>[
         Container(
           width: ScreenUtil.screenWidth,
-          height: ScreenUtil().setWidth(200),
+          height: ScreenUtil().setWidth(216),
           color: Color.fromRGBO(74, 74, 74, 1),
-          padding: EdgeInsets.only(top: ScreenUtil().setWidth(24)),
+          padding: EdgeInsets.only(top: ScreenUtil().setWidth(41)),
           child: Column(
             children: <Widget>[
               Stack(
@@ -109,7 +109,7 @@ class UserInfoComponent extends StatelessWidget {
         ),
         Positioned(
           right: ScreenUtil().setWidth(10),
-          top: ScreenUtil().setWidth(15),
+          top: ScreenUtil().setWidth(33),
           child: GestureDetector(
             onTap: () {
               Routes.router.navigateTo(context, "/settingPage");

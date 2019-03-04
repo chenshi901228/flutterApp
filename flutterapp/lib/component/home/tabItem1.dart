@@ -38,11 +38,12 @@ class _TabItem1State extends State<TabItem1Component>
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil(width: 375, height: 667)..init(context);
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       floatingActionButton: Offstage(
           offstage: topButton,
           child: GestureDetector(
             onTap: () {
-              _scrollController.animateTo(0,
+              _scrollController.animateTo(0.0,
                   duration: Duration(milliseconds: 500), curve: Curves.easeIn);
             },
             child: Image.asset(

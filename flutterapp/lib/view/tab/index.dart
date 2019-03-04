@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../utils/event_bus.dart';
-import '../../type/goTop.dart';
 
 import './home.dart';
 import './shopping_cart.dart';
@@ -53,7 +51,6 @@ class _IndexState extends State<IndexPage> {
         backgroundColor: Color.fromRGBO(241, 241, 241, 1),
         resizeToAvoidBottomPadding: false,
         body: _renderItem[_tabIndex],
-
         bottomNavigationBar: BottomAppBar(
           child: Container(
             padding:

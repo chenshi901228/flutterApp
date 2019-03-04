@@ -1,7 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'dart:convert';
+
+import 'package:flutter_picker/flutter_picker.dart';
 
 import '../../utils/routes.dart';
+
+const PickerData2 = '''
+[
+    [
+        "四川省",
+        "湖南省",
+        "江西省",
+        "海南省"
+    ],
+    [
+        "成都市",
+        "绵阳市",
+        "重庆市",
+        "遂宁市"
+    ],
+    [
+        "三台县",
+        "郫县",
+        "新津县",
+        "金堂县"
+    ]
+]
+    ''';
 
 class EditAddressPage extends StatefulWidget {
   @override
@@ -10,6 +36,28 @@ class EditAddressPage extends StatefulWidget {
 
 class _EditAddressState extends State<EditAddressPage> {
   bool _value = true;
+
+  showPickerArray(BuildContext context) {
+    new Picker(
+        adapter: PickerDataAdapter<String>(
+          pickerdata: new JsonDecoder().convert(PickerData2),
+          isArray: true,
+        ),
+        hideHeader: false,
+        height: ScreenUtil().setWidth(200),
+        selecteds: [3, 2, 2],
+        // title: new Text("Please Select"),
+        confirmText: "确认",
+        cancelText: "取消",
+        onSelect: (Picker picker, int value, List valuenow){
+          print(valuenow);
+        },
+        onConfirm: (Picker picker, List value) {
+          print(value.toString());
+          print(picker.getSelectedValues());
+        }).showModal(this.context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -111,7 +159,8 @@ class _EditAddressState extends State<EditAddressPage> {
               )),
           GestureDetector(
               onTap: () {
-                Routes.router.navigateTo(context, "/myAddressPage");
+                // Routes.router.navigateTo(context, "/myAddressPage");
+                showPickerArray(context);
               },
               child: Container(
                 padding: EdgeInsets.symmetric(

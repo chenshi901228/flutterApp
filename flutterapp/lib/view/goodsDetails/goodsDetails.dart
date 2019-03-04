@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 import '../../utils/routes.dart';
 
 import '../../component/goodsDetails/swiper.dart';
@@ -44,7 +46,15 @@ class _GoodsDetailsState extends State<GoodsDetailsPage> {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
-                  Routes.router.navigateTo(context, "/confirmOrderPage");
+                  // Routes.router.navigateTo(context, "/confirmOrderPage");
+                  Fluttertoast.showToast(
+                      msg: "添加成功，在购物车等您~",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIos: 1,
+                      backgroundColor: Color.fromRGBO(0, 0, 0, 0.6),
+                      textColor: Colors.white,
+                      fontSize: ScreenUtil().setSp(12));
                 },
                 child: Image.asset(
                   "images/icon/addShopping.png",

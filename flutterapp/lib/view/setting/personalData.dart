@@ -44,7 +44,9 @@ class _PersonalDataState extends State<PersonalDataPage> {
       body: ListView(
         children: <Widget>[
           GestureDetector(
-            onTap: () {},
+            onTap: () {
+              print("选择头像");
+            },
             child: Container(
               padding: EdgeInsets.only(
                   left: ScreenUtil().setWidth(20),

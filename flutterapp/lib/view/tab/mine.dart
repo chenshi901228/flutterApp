@@ -15,15 +15,17 @@ class MinePage extends StatefulWidget {
 class _MineState extends State<MinePage> {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(20)),
-      children: <Widget>[
-        new UserInfoComponent(),
-        new AssetComponent(),
-        new MyOrderComponent(),
-        new PartnerComponent(),
-        new DividendComponent()
-      ],
+    return Scaffold(
+      body: ListView(
+        padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(20)),
+        children: <Widget>[
+          new UserInfoComponent(),
+          new AssetComponent(),
+          new MyOrderComponent(),
+          new PartnerComponent(),
+          new DividendComponent()
+        ],
+      ),
     );
   }
 }

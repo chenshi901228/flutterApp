@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RegPage extends StatefulWidget {
@@ -9,6 +10,36 @@ class RegPage extends StatefulWidget {
 class RegPageState extends State<RegPage> {
   bool ishide = true;
   bool ishide1 = true;
+  String _getCodeString = "获取验证码";
+  int lastTime = 10;
+  var timer;
+  getCode() {
+    setState(() {
+      if (_getCodeString != "获取验证码") {
+        return;
+      }
+      _getCodeString = '${lastTime--}s后重新获取';
+      timer = new Timer.periodic(new Duration(seconds: 1), (timer) {
+        setState(() {
+          if (lastTime > 0) {
+            _getCodeString = '${lastTime--}s后重新获取';
+          } else {
+            _getCodeString = '获取验证码';
+            lastTime = 9;
+            timer.cancel();
+            timer = null;
+          }
+        });
+      });
+    });
+  }
+
+  void dispose() {
+    timer?.cancel();
+    timer = null;
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil(width: 375, height: 667)..init(context);
@@ -22,7 +53,7 @@ class RegPageState extends State<RegPage> {
                     "https://alipic.lanhuapp.com/bb704d8d79ba49875a74f68b85a6f77d"),
                 fit: BoxFit.fill)),
         padding: EdgeInsets.only(
-            top: ScreenUtil().setHeight(113),
+            top: ScreenUtil().setWidth(113),
             left: ScreenUtil().setWidth(20),
             right: ScreenUtil().setWidth(20)),
         child: Column(
@@ -30,7 +61,7 @@ class RegPageState extends State<RegPage> {
             Stack(
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(bottom: ScreenUtil().setHeight(10)),
+                  margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(10)),
                   decoration:
                       BoxDecoration(border: Border.all(color: Colors.white)),
                   child: TextField(
@@ -39,19 +70,19 @@ class RegPageState extends State<RegPage> {
                         fontSize: ScreenUtil().setSp(14), color: Colors.white),
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.symmetric(
-                            vertical: ScreenUtil().setHeight(12)),
+                            vertical: ScreenUtil().setWidth(12)),
                         border: InputBorder.none,
                         hintText: "输入手机号",
                         hintStyle: TextStyle(color: Colors.white)),
                   ),
                 ),
                 Positioned(
-                  top: ScreenUtil().setHeight(8),
+                  top: ScreenUtil().setWidth(8),
                   left: ScreenUtil().setWidth(10),
                   child: Image.asset(
                     "images/icon/phone_icon.png",
                     width: ScreenUtil().setWidth(15),
-                    height: ScreenUtil().setHeight(28),
+                    height: ScreenUtil().setWidth(28),
                   ),
                 )
               ],
@@ -59,7 +90,7 @@ class RegPageState extends State<RegPage> {
             Stack(
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(bottom: ScreenUtil().setHeight(10)),
+                  margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(10)),
                   decoration:
                       BoxDecoration(border: Border.all(color: Colors.white)),
                   child: TextField(
@@ -68,38 +99,38 @@ class RegPageState extends State<RegPage> {
                         fontSize: ScreenUtil().setSp(14), color: Colors.white),
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.symmetric(
-                            vertical: ScreenUtil().setHeight(12)),
+                            vertical: ScreenUtil().setWidth(12)),
                         border: InputBorder.none,
                         hintText: "输入验证码",
                         hintStyle: TextStyle(color: Colors.white)),
                   ),
                 ),
                 Positioned(
-                  top: ScreenUtil().setHeight(13),
+                  top: ScreenUtil().setWidth(13),
                   left: ScreenUtil().setWidth(10),
                   child: Image.asset(
                     "images/icon/verificationCode_1.png",
                     width: ScreenUtil().setWidth(16),
-                    height: ScreenUtil().setHeight(19),
+                    height: ScreenUtil().setWidth(19),
                   ),
                 ),
                 Positioned(
                   right: ScreenUtil().setWidth(10),
-                  top: ScreenUtil().setHeight(10),
+                  top: ScreenUtil().setWidth(10),
                   child: GestureDetector(
                     onTap: () {
-                      print("获取验证码");
+                      getCode();
                     },
                     child: Container(
                       // color: Colors.white,
                       padding: EdgeInsets.symmetric(
-                          vertical: ScreenUtil().setHeight(5),
+                          vertical: ScreenUtil().setWidth(5),
                           horizontal: ScreenUtil().setWidth(5)),
                       decoration: BoxDecoration(
                           color: Color.fromRGBO(155, 155, 155, 1),
                           borderRadius: BorderRadius.all(
                               Radius.circular(ScreenUtil().setWidth(13)))),
-                      child: Text("获取验证码",
+                      child: Text(_getCodeString,
                           style: TextStyle(
                               fontSize: ScreenUtil().setSp(12),
                               color: Colors.white)),
@@ -111,7 +142,7 @@ class RegPageState extends State<RegPage> {
             Stack(
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(bottom: ScreenUtil().setHeight(10)),
+                  margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(10)),
                   decoration:
                       BoxDecoration(border: Border.all(color: Colors.white)),
                   child: TextField(
@@ -121,24 +152,24 @@ class RegPageState extends State<RegPage> {
                         fontSize: ScreenUtil().setSp(14), color: Colors.white),
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.symmetric(
-                            vertical: ScreenUtil().setHeight(12)),
+                            vertical: ScreenUtil().setWidth(12)),
                         border: InputBorder.none,
                         hintText: "设置新密码",
                         hintStyle: TextStyle(color: Colors.white)),
                   ),
                 ),
                 Positioned(
-                  top: ScreenUtil().setHeight(13),
+                  top: ScreenUtil().setWidth(13),
                   left: ScreenUtil().setWidth(10),
                   child: Image.asset(
                     "images/icon/pas_icon.png",
                     width: ScreenUtil().setWidth(16),
-                    height: ScreenUtil().setHeight(19),
+                    height: ScreenUtil().setWidth(19),
                   ),
                 ),
                 Positioned(
                     width: ScreenUtil().setWidth(40),
-                    height: ScreenUtil().setHeight(44),
+                    height: ScreenUtil().setWidth(44),
                     right: 0,
                     top: 0,
                     child: GestureDetector(
@@ -154,12 +185,12 @@ class RegPageState extends State<RegPage> {
                               ? Image.asset(
                                   "images/icon/ishide_2.png",
                                   width: ScreenUtil().setWidth(20),
-                                  height: ScreenUtil().setHeight(10),
+                                  height: ScreenUtil().setWidth(10),
                                 )
                               : Image.asset(
                                   "images/icon/isopen_2.png",
                                   width: ScreenUtil().setWidth(20),
-                                  height: ScreenUtil().setHeight(13),
+                                  height: ScreenUtil().setWidth(13),
                                 )),
                     ))
               ],
@@ -176,24 +207,24 @@ class RegPageState extends State<RegPage> {
                         fontSize: ScreenUtil().setSp(14), color: Colors.white),
                     decoration: InputDecoration(
                         contentPadding: EdgeInsets.symmetric(
-                            vertical: ScreenUtil().setHeight(12)),
+                            vertical: ScreenUtil().setWidth(12)),
                         border: InputBorder.none,
                         hintText: "确认新密码",
                         hintStyle: TextStyle(color: Colors.white)),
                   ),
                 ),
                 Positioned(
-                  top: ScreenUtil().setHeight(13),
+                  top: ScreenUtil().setWidth(13),
                   left: ScreenUtil().setWidth(10),
                   child: Image.asset(
                     "images/icon/pas_icon.png",
                     width: ScreenUtil().setWidth(16),
-                    height: ScreenUtil().setHeight(19),
+                    height: ScreenUtil().setWidth(19),
                   ),
                 ),
                 Positioned(
                     width: ScreenUtil().setWidth(40),
-                    height: ScreenUtil().setHeight(44),
+                    height: ScreenUtil().setWidth(44),
                     right: 0,
                     top: 0,
                     child: GestureDetector(
@@ -209,12 +240,12 @@ class RegPageState extends State<RegPage> {
                               ? Image.asset(
                                   "images/icon/ishide_2.png",
                                   width: ScreenUtil().setWidth(20),
-                                  height: ScreenUtil().setHeight(10),
+                                  height: ScreenUtil().setWidth(10),
                                 )
                               : Image.asset(
                                   "images/icon/isopen_2.png",
                                   width: ScreenUtil().setWidth(20),
-                                  height: ScreenUtil().setHeight(13),
+                                  height: ScreenUtil().setWidth(13),
                                 )),
                     ))
               ],
@@ -224,9 +255,9 @@ class RegPageState extends State<RegPage> {
                 print("注册");
               },
               child: Container(
-                height: ScreenUtil().setHeight(44),
+                height: ScreenUtil().setWidth(44),
                 alignment: Alignment.center,
-                margin: EdgeInsets.only(top: ScreenUtil().setHeight(110)),
+                margin: EdgeInsets.only(top: ScreenUtil().setWidth(110)),
                 decoration:
                     BoxDecoration(border: Border.all(color: Colors.white)),
                 child: Text(
