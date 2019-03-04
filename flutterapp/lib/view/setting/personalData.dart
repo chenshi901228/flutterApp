@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:async';
+import 'dart:io';
 import '../../utils/routes.dart';
 
 class PersonalDataPage extends StatefulWidget {
@@ -8,6 +11,15 @@ class PersonalDataPage extends StatefulWidget {
 }
 
 class _PersonalDataState extends State<PersonalDataPage> {
+  File _image;
+
+  Future getImage() async {
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = image;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +57,8 @@ class _PersonalDataState extends State<PersonalDataPage> {
         children: <Widget>[
           GestureDetector(
             onTap: () {
-              print("选择头像");
+              // print("选择头像");
+              getImage();
             },
             child: Container(
               padding: EdgeInsets.only(
@@ -78,12 +91,20 @@ class _PersonalDataState extends State<PersonalDataPage> {
                         decoration: BoxDecoration(
                             color: Color.fromRGBO(216, 216, 216, 1),
                             borderRadius: BorderRadius.circular(100)),
-                        child: Text(
-                          "头像",
-                          style: TextStyle(
-                              fontSize: ScreenUtil().setSp(12),
-                              color: Color.fromRGBO(102, 102, 102, 1)),
-                        ),
+                        child: _image == null
+                            ? Text(
+                                "头像",
+                                style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(12),
+                                    color: Color.fromRGBO(102, 102, 102, 1)),
+                              )
+                            : ClipOval(
+                                child: Image.file(
+                                  _image,
+                                  width: ScreenUtil().setWidth(50),
+                                  height: ScreenUtil().setWidth(50),
+                                ),
+                              ),
                       ),
                       Image.asset(
                         "images/icon/right_icon.png",
