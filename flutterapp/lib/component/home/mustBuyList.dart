@@ -31,7 +31,7 @@ class _MustBuyState extends State<MustBuyComponent> {
                 "images/goodsDetails.jpg",
                 width: ScreenUtil().setWidth(65),
                 height: ScreenUtil().setWidth(83),
-                fit: BoxFit.fill,
+                // fit: BoxFit.fill,
               ),
               Padding(
                   padding: EdgeInsets.only(left: ScreenUtil().setWidth(10)),

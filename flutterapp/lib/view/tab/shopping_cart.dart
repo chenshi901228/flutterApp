@@ -111,13 +111,13 @@ class _ShoppingCartState extends State<ShoppingCartPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          "确认删除这些宝贝吗？",
+                          data.length == 0 ? "你还没有选择要删除的宝贝" : "确认删除这些宝贝吗？",
                           style: TextStyle(
                               fontSize: ScreenUtil().setSp(14),
                               color: Color.fromRGBO(102, 102, 102, 1)),
                         ),
                         Text(
-                          "删除之后不能再找回哦",
+                          data.length == 0 ? "" : "删除之后不能再找回哦",
                           style: TextStyle(
                               fontSize: ScreenUtil().setSp(12),
                               color: Color.fromRGBO(153, 153, 153, 1)),
@@ -151,14 +151,16 @@ class _ShoppingCartState extends State<ShoppingCartPage> {
                         Expanded(
                           child: GestureDetector(
                               onTap: () {
-                                deletemany();
+                                data.length == 0
+                                    ? Navigator.pop(context)
+                                    : deletemany();
                               },
                               child: Container(
                                 height: ScreenUtil().setWidth(48),
                                 alignment: Alignment.center,
                                 color: Colors.transparent,
                                 child: Text(
-                                  "删除",
+                                  data.length == 0 ? "确认" : "删除",
                                   style: TextStyle(
                                       fontSize: ScreenUtil().setSp(14),
                                       color: Color.fromRGBO(255, 89, 89, 1)),

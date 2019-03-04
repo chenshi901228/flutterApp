@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../utils/event_bus.dart';
-import '../../type/goTop.dart';
-
 import '../../component/home/tabItem1.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,38 +9,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomeState extends State<HomePage> {
-  bool topButton = true;
-  void initState() {
-    eventBus.on<GoTop>().listen((e) {
-      if (mounted) {
-        setState(() {
-          topButton = e.goTop;
-        });
-      }else{
-        return;
-      }
-    });
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil(width: 375, height: 667)..init(context);
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        floatingActionButton: Offstage(
-            offstage: topButton,
-            child: GestureDetector(
-              onTap: () {
-                eventBus.fire(HandleTop());
-              },
-              child: Image.asset(
-                "images/icon/TOP.png",
-                width: ScreenUtil().setWidth(32),
-                height: ScreenUtil().setWidth(32),
-              ),
-            )),
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(92),
             child: SafeArea(
@@ -69,7 +40,7 @@ class _HomeState extends State<HomePage> {
                   child: Material(
                       borderRadius:
                           BorderRadius.circular(ScreenUtil().setWidth(15)),
-                      color: Color.fromRGBO(220, 220, 220, 1),
+                      color: Color.fromRGBO(242, 242, 242, 1),
                       child: Stack(
                         children: <Widget>[
                           TextField(
@@ -122,8 +93,8 @@ class _HomeState extends State<HomePage> {
         body: TabBarView(
           children: <Widget>[
             new TabItem1Component(),
-            Text("选项卡2"),
-            Text("选项卡3"),
+            new TabItem1Component(),
+            new TabItem1Component(),
           ],
         ),
       ),

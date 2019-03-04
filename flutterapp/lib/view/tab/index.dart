@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../utils/event_bus.dart';
+import '../../type/goTop.dart';
+
 import './home.dart';
 import './shopping_cart.dart';
 import './mine.dart';
@@ -12,6 +15,7 @@ class IndexPage extends StatefulWidget {
 
 class _IndexState extends State<IndexPage> {
   int _tabIndex = 0;
+  
 
   List _renderItem = [new HomePage(), new ShoppingCartPage(), new MinePage()];
   @override
@@ -49,6 +53,7 @@ class _IndexState extends State<IndexPage> {
         backgroundColor: Color.fromRGBO(241, 241, 241, 1),
         resizeToAvoidBottomPadding: false,
         body: _renderItem[_tabIndex],
+
         bottomNavigationBar: BottomAppBar(
           child: Container(
             padding:
