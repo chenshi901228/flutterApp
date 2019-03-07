@@ -27,6 +27,8 @@ dependencies:
   flutter_picker: "^1.0.7"
   fluttertoast: ^2.2.11
   image_picker: ^0.4.10
+  http: ^0.12.0+1
+  shared_preferences: ^0.5.1+1
 
 dev_dependencies:
   flutter_test:

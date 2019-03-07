@@ -9,6 +9,11 @@ class ForgetPassWordPage extends StatefulWidget {
 }
 
 class _ForgetPassWordPageState extends State<ForgetPassWordPage> {
+  GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  int phone;
+  int verifyCode;
+  String passwordFirst;
+  String passwordSecond;
   bool ishide = true;
   bool ishide1 = true;
   String _getCodeString = "获取验证码";
@@ -33,6 +38,10 @@ class _ForgetPassWordPageState extends State<ForgetPassWordPage> {
         });
       });
     });
+  }
+
+  editBtn() {
+    Fluttertoast.showToast(msg: "修改密码成功");
   }
 
   void dispose() {
@@ -75,239 +84,256 @@ class _ForgetPassWordPageState extends State<ForgetPassWordPage> {
       ),
       resizeToAvoidBottomPadding: false,
       body: Container(
-        color: Colors.white,
-        padding: EdgeInsets.only(
-            top: ScreenUtil().setWidth(49),
-            left: ScreenUtil().setWidth(20),
-            right: ScreenUtil().setWidth(20)),
-        child: Column(
-          children: <Widget>[
-            Stack(
+          color: Colors.white,
+          padding: EdgeInsets.only(
+              top: ScreenUtil().setWidth(49),
+              left: ScreenUtil().setWidth(20),
+              right: ScreenUtil().setWidth(20)),
+          child: Form(
+            key: _formKey,
+            child: Column(
               children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(10)),
-                  decoration: BoxDecoration(
-                      border:
-                          Border.all(color: Color.fromRGBO(155, 155, 155, 1))),
-                  child: TextField(
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: ScreenUtil().setSp(14),
-                        color: Color.fromRGBO(155, 155, 155, 1)),
-                    decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: ScreenUtil().setWidth(12)),
-                        border: InputBorder.none,
-                        hintText: "输入手机号",
-                        hintStyle:
-                            TextStyle(color: Color.fromRGBO(155, 155, 155, 1))),
-                  ),
-                ),
-                Positioned(
-                  top: ScreenUtil().setWidth(8),
-                  left: ScreenUtil().setWidth(10),
-                  child: Image.asset(
-                    "images/icon/phone_icon_1.png",
-                    width: ScreenUtil().setWidth(15),
-                    height: ScreenUtil().setWidth(28),
-                  ),
-                )
-              ],
-            ),
-            Stack(
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(10)),
-                  decoration: BoxDecoration(
-                      border:
-                          Border.all(color: Color.fromRGBO(155, 155, 155, 1))),
-                  child: TextField(
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: ScreenUtil().setSp(14),
-                        color: Color.fromRGBO(155, 155, 155, 1)),
-                    decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: ScreenUtil().setWidth(12)),
-                        border: InputBorder.none,
-                        hintText: "输入验证码",
-                        hintStyle:
-                            TextStyle(color: Color.fromRGBO(155, 155, 155, 1))),
-                  ),
-                ),
-                Positioned(
-                  top: ScreenUtil().setWidth(13),
-                  left: ScreenUtil().setWidth(10),
-                  child: Image.asset(
-                    "images/icon/verificationCode.png",
-                    width: ScreenUtil().setWidth(16),
-                    height: ScreenUtil().setWidth(19),
-                  ),
-                ),
-                Positioned(
-                  right: ScreenUtil().setWidth(10),
-                  top: ScreenUtil().setWidth(10),
-                  child: GestureDetector(
-                    onTap: () {
-                      getCode();
-                    },
-                    child: Container(
-                      // color: Color.fromRGBO(155, 155, 155, 1),
-                      padding: EdgeInsets.symmetric(
-                          vertical: ScreenUtil().setWidth(5),
-                          horizontal: ScreenUtil().setWidth(5)),
+                Stack(
+                  children: <Widget>[
+                    Container(
+                      margin:
+                          EdgeInsets.only(bottom: ScreenUtil().setWidth(10)),
                       decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Color.fromRGBO(155, 155, 155, 1))),
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: ScreenUtil().setSp(14),
+                            color: Color.fromRGBO(155, 155, 155, 1)),
+                        decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: ScreenUtil().setWidth(12)),
+                            border: InputBorder.none,
+                            hintText: "输入手机号",
+                            hintStyle: TextStyle(
+                                color: Color.fromRGBO(155, 155, 155, 1))),
+                        onSaved: (val) {
+                          phone = int.parse(val);
+                        },
+                      ),
+                    ),
+                    Positioned(
+                      top: ScreenUtil().setWidth(8),
+                      left: ScreenUtil().setWidth(10),
+                      child: Image.asset(
+                        "images/icon/phone_icon_1.png",
+                        width: ScreenUtil().setWidth(15),
+                        height: ScreenUtil().setWidth(28),
+                      ),
+                    )
+                  ],
+                ),
+                Stack(
+                  children: <Widget>[
+                    Container(
+                      margin:
+                          EdgeInsets.only(bottom: ScreenUtil().setWidth(10)),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Color.fromRGBO(155, 155, 155, 1))),
+                      child: TextFormField(
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: ScreenUtil().setSp(14),
+                            color: Color.fromRGBO(155, 155, 155, 1)),
+                        decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: ScreenUtil().setWidth(12)),
+                            border: InputBorder.none,
+                            hintText: "输入验证码",
+                            hintStyle: TextStyle(
+                                color: Color.fromRGBO(155, 155, 155, 1))),
+                        onSaved: (val) {
+                          verifyCode = int.parse(val);
+                        },
+                      ),
+                    ),
+                    Positioned(
+                      top: ScreenUtil().setWidth(13),
+                      left: ScreenUtil().setWidth(10),
+                      child: Image.asset(
+                        "images/icon/verificationCode.png",
+                        width: ScreenUtil().setWidth(16),
+                        height: ScreenUtil().setWidth(19),
+                      ),
+                    ),
+                    Positioned(
+                      right: ScreenUtil().setWidth(10),
+                      top: ScreenUtil().setWidth(10),
+                      child: GestureDetector(
+                        onTap: () {
+                          getCode();
+                        },
+                        child: Container(
+                          // color: Color.fromRGBO(155, 155, 155, 1),
+                          padding: EdgeInsets.symmetric(
+                              vertical: ScreenUtil().setWidth(5),
+                              horizontal: ScreenUtil().setWidth(5)),
+                          decoration: BoxDecoration(
+                              color: Color.fromRGBO(155, 155, 155, 1),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(ScreenUtil().setWidth(13)))),
+                          child: Text(_getCodeString,
+                              style: TextStyle(
+                                  fontSize: ScreenUtil().setSp(12),
+                                  color: Color.fromRGBO(74, 74, 74, 1))),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                Stack(
+                  children: <Widget>[
+                    Container(
+                      margin:
+                          EdgeInsets.only(bottom: ScreenUtil().setWidth(10)),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Color.fromRGBO(155, 155, 155, 1))),
+                      child: TextFormField(
+                        obscureText: ishide,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: ScreenUtil().setSp(14),
+                            color: Color.fromRGBO(155, 155, 155, 1)),
+                        decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: ScreenUtil().setWidth(12)),
+                            border: InputBorder.none,
+                            hintText: "设置新密码",
+                            hintStyle: TextStyle(
+                                color: Color.fromRGBO(155, 155, 155, 1))),
+                        onSaved: (val) {
+                          passwordFirst = val;
+                        },
+                      ),
+                    ),
+                    Positioned(
+                      top: ScreenUtil().setWidth(13),
+                      left: ScreenUtil().setWidth(10),
+                      child: Image.asset(
+                        "images/icon/pas_icon_1.png",
+                        width: ScreenUtil().setWidth(16),
+                        height: ScreenUtil().setWidth(19),
+                      ),
+                    ),
+                    Positioned(
+                        width: ScreenUtil().setWidth(40),
+                        height: ScreenUtil().setWidth(44),
+                        right: 0,
+                        top: 0,
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              ishide = !ishide;
+                            });
+                          },
+                          child: Container(
+                              alignment: Alignment.center,
+                              color: Colors.transparent,
+                              child: ishide
+                                  ? Image.asset(
+                                      "images/icon/ishide_1.png",
+                                      width: ScreenUtil().setWidth(20),
+                                      height: ScreenUtil().setWidth(10),
+                                    )
+                                  : Image.asset(
+                                      "images/icon/isopen_1.png",
+                                      width: ScreenUtil().setWidth(20),
+                                      height: ScreenUtil().setWidth(13),
+                                    )),
+                        ))
+                  ],
+                ),
+                Stack(
+                  children: <Widget>[
+                    Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Color.fromRGBO(155, 155, 155, 1))),
+                      child: TextFormField(
+                        obscureText: ishide1,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: ScreenUtil().setSp(14),
+                            color: Color.fromRGBO(155, 155, 155, 1)),
+                        decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: ScreenUtil().setWidth(12)),
+                            border: InputBorder.none,
+                            hintText: "确认新密码",
+                            hintStyle: TextStyle(
+                                color: Color.fromRGBO(155, 155, 155, 1))),
+                        onSaved: (val) {
+                          passwordSecond = val;
+                        },
+                      ),
+                    ),
+                    Positioned(
+                      top: ScreenUtil().setWidth(13),
+                      left: ScreenUtil().setWidth(10),
+                      child: Image.asset(
+                        "images/icon/pas_icon_1.png",
+                        width: ScreenUtil().setWidth(16),
+                        height: ScreenUtil().setWidth(19),
+                      ),
+                    ),
+                    Positioned(
+                        width: ScreenUtil().setWidth(40),
+                        height: ScreenUtil().setWidth(44),
+                        right: 0,
+                        top: 0,
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              ishide1 = !ishide1;
+                            });
+                          },
+                          child: Container(
+                              alignment: Alignment.center,
+                              color: Colors.transparent,
+                              child: ishide1
+                                  ? Image.asset(
+                                      "images/icon/ishide_1.png",
+                                      width: ScreenUtil().setWidth(20),
+                                      height: ScreenUtil().setWidth(10),
+                                    )
+                                  : Image.asset(
+                                      "images/icon/isopen_1.png",
+                                      width: ScreenUtil().setWidth(20),
+                                      height: ScreenUtil().setWidth(13),
+                                    )),
+                        ))
+                  ],
+                ),
+                GestureDetector(
+                  onTap: () {
+                    editBtn();
+                  },
+                  child: Container(
+                    height: ScreenUtil().setWidth(44),
+                    alignment: Alignment.center,
+                    margin: EdgeInsets.only(top: ScreenUtil().setWidth(40)),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                            color: Color.fromRGBO(155, 155, 155, 1))),
+                    child: Text(
+                      "完成",
+                      style: TextStyle(
                           color: Color.fromRGBO(155, 155, 155, 1),
-                          borderRadius: BorderRadius.all(
-                              Radius.circular(ScreenUtil().setWidth(13)))),
-                      child: Text(_getCodeString,
-                          style: TextStyle(
-                              fontSize: ScreenUtil().setSp(12),
-                              color: Color.fromRGBO(74, 74, 74, 1))),
+                          fontSize: ScreenUtil().setSp(14)),
                     ),
                   ),
                 )
               ],
             ),
-            Stack(
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(bottom: ScreenUtil().setWidth(10)),
-                  decoration: BoxDecoration(
-                      border:
-                          Border.all(color: Color.fromRGBO(155, 155, 155, 1))),
-                  child: TextField(
-                    obscureText: ishide,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: ScreenUtil().setSp(14),
-                        color: Color.fromRGBO(155, 155, 155, 1)),
-                    decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: ScreenUtil().setWidth(12)),
-                        border: InputBorder.none,
-                        hintText: "设置新密码",
-                        hintStyle:
-                            TextStyle(color: Color.fromRGBO(155, 155, 155, 1))),
-                  ),
-                ),
-                Positioned(
-                  top: ScreenUtil().setWidth(13),
-                  left: ScreenUtil().setWidth(10),
-                  child: Image.asset(
-                    "images/icon/pas_icon_1.png",
-                    width: ScreenUtil().setWidth(16),
-                    height: ScreenUtil().setWidth(19),
-                  ),
-                ),
-                Positioned(
-                    width: ScreenUtil().setWidth(40),
-                    height: ScreenUtil().setWidth(44),
-                    right: 0,
-                    top: 0,
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          ishide = !ishide;
-                        });
-                      },
-                      child: Container(
-                          alignment: Alignment.center,
-                          color: Colors.transparent,
-                          child: ishide
-                              ? Image.asset(
-                                  "images/icon/ishide_1.png",
-                                  width: ScreenUtil().setWidth(20),
-                                  height: ScreenUtil().setWidth(10),
-                                )
-                              : Image.asset(
-                                  "images/icon/isopen_1.png",
-                                  width: ScreenUtil().setWidth(20),
-                                  height: ScreenUtil().setWidth(13),
-                                )),
-                    ))
-              ],
-            ),
-            Stack(
-              children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(
-                      border:
-                          Border.all(color: Color.fromRGBO(155, 155, 155, 1))),
-                  child: TextField(
-                    obscureText: ishide1,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontSize: ScreenUtil().setSp(14),
-                        color: Color.fromRGBO(155, 155, 155, 1)),
-                    decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: ScreenUtil().setWidth(12)),
-                        border: InputBorder.none,
-                        hintText: "确认新密码",
-                        hintStyle:
-                            TextStyle(color: Color.fromRGBO(155, 155, 155, 1))),
-                  ),
-                ),
-                Positioned(
-                  top: ScreenUtil().setWidth(13),
-                  left: ScreenUtil().setWidth(10),
-                  child: Image.asset(
-                    "images/icon/pas_icon_1.png",
-                    width: ScreenUtil().setWidth(16),
-                    height: ScreenUtil().setWidth(19),
-                  ),
-                ),
-                Positioned(
-                    width: ScreenUtil().setWidth(40),
-                    height: ScreenUtil().setWidth(44),
-                    right: 0,
-                    top: 0,
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          ishide1 = !ishide1;
-                        });
-                      },
-                      child: Container(
-                          alignment: Alignment.center,
-                          color: Colors.transparent,
-                          child: ishide1
-                              ? Image.asset(
-                                  "images/icon/ishide_1.png",
-                                  width: ScreenUtil().setWidth(20),
-                                  height: ScreenUtil().setWidth(10),
-                                )
-                              : Image.asset(
-                                  "images/icon/isopen_1.png",
-                                  width: ScreenUtil().setWidth(20),
-                                  height: ScreenUtil().setWidth(13),
-                                )),
-                    ))
-              ],
-            ),
-            GestureDetector(
-              onTap: () {
-                Fluttertoast.showToast(msg: "修改密码成功");
-              },
-              child: Container(
-                height: ScreenUtil().setWidth(44),
-                alignment: Alignment.center,
-                margin: EdgeInsets.only(top: ScreenUtil().setWidth(40)),
-                decoration: BoxDecoration(
-                    border:
-                        Border.all(color: Color.fromRGBO(155, 155, 155, 1))),
-                child: Text(
-                  "完成",
-                  style: TextStyle(
-                      color: Color.fromRGBO(155, 155, 155, 1),
-                      fontSize: ScreenUtil().setSp(14)),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
+          )),
     );
   }
 }

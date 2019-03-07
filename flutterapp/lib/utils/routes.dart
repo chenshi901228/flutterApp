@@ -24,10 +24,10 @@ import '../view/myAddress/editAddress.dart'; //编辑收货地址
 
 class Routes {
   static Router router;
-  static String loginPage = "/";
+  static String indexPage = '/';
+  static String loginPage = "/login";
   static String forgetPassWordPage = '/forgetPassWordPage';
   static String regPage = '/regPage';
-  static String indexPage = '/indexPage';
   static String classIfyPage = '/classIfyPage';
   static String goodsDetailsPage = '/goodsDetailsPage';
   static String storePage = '/storePage';

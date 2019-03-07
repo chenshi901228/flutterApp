@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 import '../../utils/routes.dart';
 
 class Login extends StatefulWidget {
@@ -10,15 +14,39 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
-  String name;
+  String phone;
   String password;
-
-  void loginBtn() {
+  void loginBtn() async {
     final form = _formKey.currentState;
-    if (form.validate()) {
-      form.save();
-      form.reset();
-      Routes.router.navigateTo(context, '/indexPage');
+    form.save();
+    RegExp mobile =
+        new RegExp(r"(13[0-9]|15[0-35-9]|17[0678]|18[0-9]|14[57])[0-9]{8}");
+    if (phone.isEmpty) {
+      Fluttertoast.showToast(msg: "请输入手机号码");
+    } else if (!mobile.hasMatch(phone)) {
+      Fluttertoast.showToast(msg: "请输入正确的手机号码");
+    } else if (password.isEmpty) {
+      Fluttertoast.showToast(msg: "请输入密码");
+    } else {
+      Map params = {"phone": phone, "password": password};
+      try {
+        final data = await http.Client()
+            .post("http://192.168.56.1:3000/admin/login",
+                body: json.encode(params))
+            .then((res) {
+          return json.decode(res.body);
+        });
+        if (data["code"] == 1) {
+          SharedPreferences preferences = await SharedPreferences.getInstance();
+          preferences.setString("token", data["token"]);
+          form.reset();
+          Routes.router.navigateTo(context, '/');
+        } else {
+          Fluttertoast.showToast(msg: data["msg"]);
+        }
+      } catch (error) {
+        print(error);
+      }
     }
   }
 
@@ -55,6 +83,7 @@ class _LoginState extends State<Login> {
                               fontSize: ScreenUtil().setSp(14),
                               color: Color.fromRGBO(255, 255, 255, 1)),
                           textAlign: TextAlign.center,
+                          keyboardType: TextInputType.numberWithOptions(),
                           decoration: InputDecoration(
                               contentPadding: EdgeInsets.symmetric(
                                   vertical: ScreenUtil().setWidth(12)),
@@ -62,11 +91,8 @@ class _LoginState extends State<Login> {
                               hintText: "输入账号",
                               hintStyle: TextStyle(
                                   color: Color.fromRGBO(255, 255, 255, 1))),
-                          validator: (val) => (val.length <= 5 || val.isEmpty)
-                              ? "请输入商品名称"
-                              : null,
                           onSaved: (value) {
-                            name = value;
+                            phone = value;
                           },
                         ),
                         Positioned(
