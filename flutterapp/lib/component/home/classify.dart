@@ -4,27 +4,22 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/routes.dart';
 
 class ClassifyComponent extends StatefulWidget {
+  ClassifyComponent({Key key, this.data}) : super(key: key);
+  final List data;
   @override
   _ClassifyState createState() => new _ClassifyState();
 }
 
 class _ClassifyState extends State<ClassifyComponent> {
-  final List _classifys = [
-    "白金尊享",
-    "焕颜洗护",
-    "全球味道",
-    "妈咪宝贝",
-    "轻奢生活",
-    "精致厨房",
-    "精品惠选",
-    "口袋记忆"
-  ];
   @override
   Widget build(BuildContext context) {
+    List _this = widget.data ?? [];
     GestureDetector classifyItem(String title) {
       return GestureDetector(
         onTap: () {
-          Routes.router.navigateTo(context, "/classIfyPage");
+          if (title != "虚位以待") {
+            Routes.router.navigateTo(context, "/classIfyPage");
+          }
         },
         child: Container(
             width: ScreenUtil().setWidth(68),
@@ -53,11 +48,11 @@ class _ClassifyState extends State<ClassifyComponent> {
             vertical: ScreenUtil().setWidth(20),
             horizontal: ScreenUtil().setWidth(20)),
         child: Wrap(
-            alignment: WrapAlignment.spaceBetween,
+            // alignment: WrapAlignment.spaceBetween,
             runSpacing: ScreenUtil().setWidth(10),
             spacing: ScreenUtil().setWidth(21),
-            children: _classifys.map((item) {
-              return classifyItem(item);
+            children: _this.map((item) {
+              return classifyItem(item["title"]);
             }).toList()));
   }
 }

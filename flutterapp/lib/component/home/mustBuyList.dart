@@ -4,15 +4,21 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/routes.dart';
 
 class MustBuyComponent extends StatefulWidget {
+  MustBuyComponent({Key key, this.data}) : super(key: key);
+  final data;
   @override
   _MustBuyState createState() => new _MustBuyState();
 }
 
-class _MustBuyState extends State<MustBuyComponent> {
+class _MustBuyState extends State<MustBuyComponent>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   final List goodsList = [];
   @override
   Widget build(BuildContext context) {
-    GestureDetector item() {
+    List _this = widget.data != null ? widget.data : [];
+    GestureDetector item(Map goods) {
       return GestureDetector(
         onTap: () {
           Routes.router.navigateTo(context, "/goodsDetailsPage");
@@ -27,8 +33,8 @@ class _MustBuyState extends State<MustBuyComponent> {
               borderRadius: BorderRadius.circular(ScreenUtil().setWidth(2))),
           child: Row(
             children: <Widget>[
-              Image.asset(
-                "images/goodsDetails.jpg",
+              Image.network(
+                goods["goodsImg"],
                 width: ScreenUtil().setWidth(65),
                 height: ScreenUtil().setWidth(83),
                 // fit: BoxFit.fill,
@@ -42,7 +48,7 @@ class _MustBuyState extends State<MustBuyComponent> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            "韩国进口蒂佳婷面膜水动力Dr.Jart+ 5片/盒（默认）韩国进口蒂佳婷面膜水动力Dr.Jart+ 5片/盒（默认）",
+                            goods["goodsName"],
                             softWrap: true,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -66,7 +72,7 @@ class _MustBuyState extends State<MustBuyComponent> {
                             ),
                           ),
                           Text(
-                            "￥119.00",
+                            "￥${goods["price"]}",
                             style: TextStyle(
                                 fontSize: ScreenUtil().setSp(12),
                                 color: Color.fromRGBO(255, 102, 102, 1)),
@@ -92,18 +98,12 @@ class _MustBuyState extends State<MustBuyComponent> {
                     fontSize: ScreenUtil().setSp(14), color: Colors.black)),
           ),
           Expanded(
-              child: Container(
             child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: <Widget>[
-                item(),
-                item(),
-                item(),
-                item(),
-                item(),
-              ],
-            ),
-          ))
+                scrollDirection: Axis.horizontal,
+                children: _this.map((f) {
+                  return item(f);
+                }).toList()),
+          )
         ],
       ),
     );

@@ -3,36 +3,37 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 class SwiperComponent extends StatefulWidget {
+  SwiperComponent({Key key, this.data}) : super(key: key);
+  final data;
   @override
   _SwiperComponentState createState() => new _SwiperComponentState();
 }
 
-class _SwiperComponentState extends State<SwiperComponent> {
-  final List _swiperItem = [
-    Image.asset(
-      "images/banner.jpg",
-      fit: BoxFit.fill,
-    ),
-    Image.asset(
-      "images/banner_1.jpg",
-      fit: BoxFit.fill,
-    ),
-    Image.asset(
-      "images/banner_2.jpg",
-      fit: BoxFit.fill,
-    )
-  ];
+class _SwiperComponentState extends State<SwiperComponent>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   @override
   Widget build(BuildContext context) {
+    List _this = widget.data ?? [];
+    Image swiperImg(String url) {
+      return Image.network(
+        url,
+        fit: BoxFit.fill,
+      );
+    }
+
     return Container(
       color: Colors.white,
       padding: EdgeInsets.only(top: ScreenUtil().setWidth(4)),
       height: ScreenUtil().setWidth(154),
       child: Swiper(
         itemBuilder: (BuildContext context, int index) {
-          return _swiperItem[index];
+          return _this.map((f) {
+            return swiperImg(f["url"]);
+          }).toList()[index];
         },
-        itemCount: 3,
+        itemCount: _this.length,
         autoplay: true,
         pagination: SwiperPagination(
             builder: DotSwiperPaginationBuilder(

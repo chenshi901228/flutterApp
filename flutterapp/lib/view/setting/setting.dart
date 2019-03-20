@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../utils/httpRequest.dart';
 import '../../utils/routes.dart';
 
 class SettingPage extends StatefulWidget {
@@ -44,8 +45,11 @@ class _SettingState extends State<SettingPage> {
       ),
       bottomNavigationBar: BottomAppBar(
         child: GestureDetector(
-          onTap: () {
-            print("退出当前账户");
+          onTap: () async {
+            SharedPreferences preferences =
+                await SharedPreferences.getInstance();
+            preferences.setString("token", "");
+            Routes.router.navigateTo(context, "/login");
           },
           child: Container(
             alignment: Alignment.center,

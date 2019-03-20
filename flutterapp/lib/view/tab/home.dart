@@ -1,23 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../component/home/tabItem1.dart';
+
+import '../../utils/routes.dart';
+import '../../utils/httpRequest.dart';
 
 class HomePage extends StatefulWidget {
   @override
   _HomeState createState() => new _HomeState();
 }
 
-class _HomeState extends State<HomePage> {
+class _HomeState extends State<HomePage> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+  Map initData = {};
   _getToken() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    String token = preferences.getString("token");
+    try {
+      final data = await HttpUtil().post("/init/initHomePage");
+      if (data["code"] == 0) {
+        showDialog<Null>(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Text("登录失效，请重新登录"),
+              );
+            }).then((val) {
+          Routes.router.navigateTo(context, "/login");
+        });
+      } else {
+        setState(() {
+          initData = data;
+        });
+      }
+    } catch (err) {
+      print(err);
+    }
   }
 
   void initState() {
     _getToken();
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil(width: 375, height: 667)..init(context);
@@ -101,9 +125,11 @@ class _HomeState extends State<HomePage> {
             )),
         body: TabBarView(
           children: <Widget>[
-            new TabItem1Component(),
-            new TabItem1Component(),
-            new TabItem1Component(),
+            TabItem1Component(
+              data: initData,
+            ),
+            Text("data"),
+            Text("data"),
           ],
         ),
       ),

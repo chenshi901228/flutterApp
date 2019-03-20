@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
 import '../../utils/routes.dart';
+import '../../utils/httpRequest.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -28,14 +27,9 @@ class _LoginState extends State<Login> {
     } else if (password.isEmpty) {
       Fluttertoast.showToast(msg: "请输入密码");
     } else {
-      Map params = {"phone": phone, "password": password};
+      Map params = {"phone": int.parse(phone), "password": password};
       try {
-        final data = await http.Client()
-            .post("http://192.168.56.1:3000/admin/login",
-                body: json.encode(params))
-            .then((res) {
-          return json.decode(res.body);
-        });
+        final data = await HttpUtil().post("/admin/login", params: params);
         if (data["code"] == 1) {
           SharedPreferences preferences = await SharedPreferences.getInstance();
           preferences.setString("token", data["token"]);

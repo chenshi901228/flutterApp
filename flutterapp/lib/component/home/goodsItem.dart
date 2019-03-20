@@ -4,8 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/routes.dart';
 
 class GoodsItemComponent extends StatefulWidget {
-  GoodsItemComponent({Key key, this.title = ""}) : super(key: key);
+  GoodsItemComponent({Key key, this.title = "", this.data}) : super(key: key);
   final String title;
+  final data;
   @override
   _GoodsItemState createState() => new _GoodsItemState();
 }
@@ -13,15 +14,19 @@ class GoodsItemComponent extends StatefulWidget {
 class _GoodsItemState extends State<GoodsItemComponent> {
   @override
   Widget build(BuildContext context) {
-    GestureDetector good() {
+    List _this = widget.data != null ? widget.data : [];
+    GestureDetector good(Map goods) {
       return GestureDetector(
         onTap: () {
           Routes.router.navigateTo(context, "/goodsDetailsPage");
         },
-        child: Image.asset(
-          "images/goods.png",
+        child: Container(
           width: ScreenUtil().setWidth(178),
           height: ScreenUtil().setWidth(120),
+          child: Image.network(
+            goods["goodsImg"],
+            fit: BoxFit.fill,
+          ),
         ),
       );
     }
@@ -43,19 +48,15 @@ class _GoodsItemState extends State<GoodsItemComponent> {
               )
             : SizedBox(),
         Container(
-          color: Color.fromRGBO(243, 243, 243, 1),
-          padding: EdgeInsets.all(ScreenUtil().setWidth(8)),
-          child: Wrap(
-            alignment: WrapAlignment.spaceBetween,
-            runSpacing: ScreenUtil().setWidth(3),
-            children: <Widget>[
-              good(),
-              good(),
-              good(),
-              good(),
-            ],
-          ),
-        )
+            color: Color.fromRGBO(243, 243, 243, 1),
+            width: ScreenUtil.screenWidth,
+            padding: EdgeInsets.all(ScreenUtil().setWidth(8)),
+            child: Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                runSpacing: ScreenUtil().setWidth(3),
+                children: _this.map((f) {
+                  return good(f);
+                }).toList()))
       ],
     );
   }

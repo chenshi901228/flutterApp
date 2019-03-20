@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:async';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../utils/httpRequest.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/routes.dart';
@@ -63,12 +62,7 @@ class RegPageState extends State<RegPage> {
     } else {
       Map params = {"phone": int.parse(phone), "password": passwordFirst};
       try {
-        final data = await http.Client()
-            .post("http://192.168.56.1:3000/admin/reg",
-                body: json.encode(params))
-            .then((res) {
-          return json.decode(res.body);
-        });
+        final data = await HttpUtil().post("/admin/login", params: params);
         if (data["code"] == 1) {
           SharedPreferences preferences = await SharedPreferences.getInstance();
           preferences.setString("token", data["token"]);
