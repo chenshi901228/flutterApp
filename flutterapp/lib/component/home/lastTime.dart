@@ -83,7 +83,7 @@ class _LastTimeState extends State<LastTimeComponent>
                 color: Color.fromRGBO(255, 77, 0, 1)),
           ),
           Text(
-            "今日交易：${lastTimeMap["dealOfToday"]}元",
+            "今日交易：${lastTimeMap["dealOfToday"] ?? 0.00}元",
             style: TextStyle(
                 fontSize: ScreenUtil().setSp(14),
                 color: Color.fromRGBO(255, 100, 0, 1)),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../utils/httpRequest.dart';
+import '../../utils/routes.dart';
 import '../../component/shoppingCart/item_component.dart';
 
 class ShoppingCartPage extends StatefulWidget {
@@ -8,59 +10,56 @@ class ShoppingCartPage extends StatefulWidget {
   _ShoppingCartState createState() => new _ShoppingCartState();
 }
 
-class _ShoppingCartState extends State<ShoppingCartPage> {
-  List data = [
-    {
-      "id": 0,
-      "name": "miu miu缪缪粉漾女士新款粉色香水女香氛 女士淡香氛100ml",
-      "size": "100ml",
-      "price": 2019,
-      "imgUrl": "images/goods1.jpg",
-      "isSelect": false
-    },
-    {
-      "id": 1,
-      "name": "日本进口正品白色恋人饼干套盒夹心饼干 一盒黑白饼干 24枚/盒",
-      "size": "100ml",
-      "price": 219,
-      "imgUrl": "images/goods1.jpg",
-      "isSelect": false
-    },
-    {
-      "id": 2,
-      "name": "祖玛珑苦橙香氛圣诞限量100ML Jo Malone Jo Malone London",
-      "price": 1089,
-      "imgUrl": "images/goods1.jpg",
-      "isSelect": false
-    },
-    {
-      "id": 3,
-      "name": "miu miu缪缪粉漾女士新款粉色香水女香氛 女士淡香氛100ml",
-      "size": "100ml",
-      "price": 2019,
-      "imgUrl": "images/goods1.jpg",
-      "isSelect": false
-    },
-    {
-      "id": 4,
-      "name": "日本进口正品白色恋人饼干套盒夹心饼干 一盒黑白饼干 24枚/盒",
-      "size": "100ml",
-      "price": 419.2,
-      "imgUrl": "images/goods1.jpg",
-      "isSelect": false
-    },
-    {
-      "id": 5,
-      "name": "祖玛珑苦橙香氛圣诞限量100ML Jo Malone Jo Malone London",
-      "price": 219,
-      "imgUrl": "images/goods1.jpg",
-      "isSelect": false
-    },
-  ];
+class _ShoppingCartState extends State<ShoppingCartPage>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+  List data = [];
   bool _isSelectAll = false;
   String _headerRightTest = "管理";
   bool _clearOrDelete = true;
-  void clearOrDeleteFuc(String text) {
+  int newCount = 0;
+
+  getList() async {
+    try {
+      final res =
+          await HttpUtil().post("/shoppingCart/list", params: {"adminId": 1});
+      if (res["code"] == 1) {
+        final list = res["list"].map((f) {
+          f["isSelect"] = false;
+          return f;
+        }).toList();
+        setState(() {
+          data = list;
+        });
+      } else {
+        showDialog<Null>(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Text("登录失效，请重新登录"),
+              );
+            }).then((val) {
+          Routes.router.navigateTo(context, "/login");
+        });
+      }
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  editOne(int id, int count) async {
+    final res = await HttpUtil()
+        .post("/shoppingCart/edit", params: {"id": id, "count": count});
+    print(res);
+  }
+
+  void initState() {
+    getList();
+    super.initState();
+  }
+
+  clearOrDeleteFuc(String text) {
     setState(() {
       if (text == "管理") {
         _headerRightTest = "完成";
@@ -72,23 +71,31 @@ class _ShoppingCartState extends State<ShoppingCartPage> {
     });
   }
 
-  void deletemany() {
-    var newList = [];
-    data.forEach((item) {
-      if (item["isSelect"] == false) {
-        newList.add(item);
+  deletemany() async {
+    List willDeleteList = data.map((f) {
+      if (f["isSelect"]) {
+        return f["shoppingCartId"];
       }
-    });
-    setState(() {
-      data = newList;
-      if (newList.length == 0) {
-        _isSelectAll = false;
-      }
-    });
+    }).toList()
+      ..retainWhere((test) => test.runtimeType == int);
+    final res = await HttpUtil()
+        .post("/shoppingCart/deleteOne", params: {"listId": willDeleteList});
+    if (res["code"] == 1) {
+      setState(() {
+        data.retainWhere((f) => f["isSelect"] == false);
+      });
+    }
     Navigator.pop(context);
   }
 
-  void deleteFuc() {
+  deleteFuc() {
+    final t = data.any((f) {
+      if (f["isSelect"]) {
+        return true;
+      } else {
+        return false;
+      }
+    });
     showDialog<Null>(
       context: context,
       barrierDismissible: true,
@@ -111,13 +118,15 @@ class _ShoppingCartState extends State<ShoppingCartPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Text(
-                          data.length == 0 ? "你还没有选择要删除的宝贝" : "确认删除这些宝贝吗？",
+                          data.length == 0
+                              ? "你的购物车为空"
+                              : !t ? "还没有选中任何宝贝" : "确认删除选中的宝贝吗？",
                           style: TextStyle(
                               fontSize: ScreenUtil().setSp(14),
                               color: Color.fromRGBO(102, 102, 102, 1)),
                         ),
                         Text(
-                          data.length == 0 ? "" : "删除之后不能再找回哦",
+                          data.length == 0 || !t ? "" : "删除之后不能再找回哦",
                           style: TextStyle(
                               fontSize: ScreenUtil().setSp(12),
                               color: Color.fromRGBO(153, 153, 153, 1)),
@@ -151,7 +160,7 @@ class _ShoppingCartState extends State<ShoppingCartPage> {
                         Expanded(
                           child: GestureDetector(
                               onTap: () {
-                                data.length == 0
+                                data.length == 0 || !t
                                     ? Navigator.pop(context)
                                     : deletemany();
                               },
@@ -160,7 +169,7 @@ class _ShoppingCartState extends State<ShoppingCartPage> {
                                 alignment: Alignment.center,
                                 color: Colors.transparent,
                                 child: Text(
-                                  data.length == 0 ? "确认" : "删除",
+                                  data.length == 0 || !t ? "确认" : "删除",
                                   style: TextStyle(
                                       fontSize: ScreenUtil().setSp(14),
                                       color: Color.fromRGBO(255, 89, 89, 1)),
@@ -197,6 +206,42 @@ class _ShoppingCartState extends State<ShoppingCartPage> {
         }
       });
     });
+  }
+
+  countChange(value) {
+    switch (value["type"]) {
+      case "decrease":
+        setState(() {
+          data.forEach((f) {
+            if (f["shoppingCartId"] == value["shoppingCartId"] &&
+                f["count"] > 1) {
+              f["count"]--;
+              newCount = f["count"];
+            }
+          });
+        });
+        break;
+      case "increase":
+        setState(() {
+          data.forEach((f) {
+            if (f["shoppingCartId"] == value["shoppingCartId"]) {
+              f["count"]++;
+              newCount = f["count"];
+            }
+          });
+        });
+        break;
+      default:
+        setState(() {
+          data.forEach((f) {
+            if (f["shoppingCartId"] == value["shoppingCartId"]) {
+              f["count"] = value["newCount"];
+              newCount = f["count"];
+            }
+          });
+        });
+    }
+    editOne(value["shoppingCartId"], newCount);
   }
 
   @override
@@ -242,6 +287,7 @@ class _ShoppingCartState extends State<ShoppingCartPage> {
 
     return Scaffold(
       backgroundColor: Color.fromRGBO(243, 243, 243, 1),
+      resizeToAvoidBottomPadding: false,
       appBar: PreferredSize(
         child: AppBar(
           elevation: 1,
@@ -249,7 +295,7 @@ class _ShoppingCartState extends State<ShoppingCartPage> {
           centerTitle: true,
           automaticallyImplyLeading: false,
           title: Text(
-            "购物车",
+            "购物车(${data.length})",
             style: TextStyle(
                 fontSize: ScreenUtil().setSp(16),
                 color: Color.fromRGBO(51, 51, 51, 1)),
@@ -284,6 +330,7 @@ class _ShoppingCartState extends State<ShoppingCartPage> {
             data: item,
             isSelectAll: _isSelectAll,
             handle: (value) => selectOneFuc(value),
+            countChange: (value) => countChange(value),
           );
         }).toList(),
       ),

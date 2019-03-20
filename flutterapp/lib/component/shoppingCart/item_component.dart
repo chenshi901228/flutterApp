@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ItemComponent extends StatefulWidget {
-  ItemComponent({Key key, this.data, this.isSelectAll: false, this.handle})
+  ItemComponent(
+      {Key key,
+      this.data,
+      this.isSelectAll: false,
+      this.handle,
+      this.countChange})
       : super(key: key);
   final data;
   final isSelectAll;
   final handle;
+  final countChange;
   @override
   _ItemState createState() => new _ItemState();
 }
@@ -37,7 +43,7 @@ class _ItemState extends State<ItemComponent> {
           SizedBox(
             width: ScreenUtil().setWidth(10),
           ),
-          Image.asset(
+          Image.network(
             widget.data["imgUrl"],
             width: ScreenUtil().setWidth(90),
             height: ScreenUtil().setWidth(90),
@@ -54,14 +60,14 @@ class _ItemState extends State<ItemComponent> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(widget.data["name"],
+                      Text(widget.data["goodsName"],
                           softWrap: true,
                           maxLines: 2,
                           style: TextStyle(
                               fontSize: ScreenUtil().setSp(12),
                               color: Color.fromRGBO(51, 51, 51, 1))),
                       widget.data["size"] != null
-                          ? Text("100ml",
+                          ? Text(widget.data["size"],
                               softWrap: true,
                               maxLines: 2,
                               style: TextStyle(
@@ -85,19 +91,16 @@ class _ItemState extends State<ItemComponent> {
                       children: <Widget>[
                         GestureDetector(
                           onTap: () {
-                            if (_number <= 1) {
-                              setState(() {
-                                _number = 1;
-                              });
-                            } else {
-                              setState(() {
-                                _number--;
-                              });
-                            }
+                            widget.countChange({
+                              "type": "decrease",
+                              "shoppingCartId": widget.data["shoppingCartId"]
+                            });
                           },
                           child: Image.asset(
                             "images/icon/decrease.png",
-                            color: _number == 1 ? null : Colors.grey[600],
+                            color: widget.data["count"] == 1
+                                ? null
+                                : Colors.grey[600],
                             width: ScreenUtil().setWidth(17),
                             height: ScreenUtil().setWidth(17),
                           ),
@@ -111,18 +114,24 @@ class _ItemState extends State<ItemComponent> {
                           child: TextField(
                             onChanged: (value) {
                               if (value == "" || int.parse(value) < 1) {
-                                setState(() {
-                                  _number = 1;
+                                widget.countChange({
+                                  "type": "textChange",
+                                  "shoppingCartId":
+                                      widget.data["shoppingCartId"],
+                                  "newCount": 1
                                 });
                               } else {
-                                setState(() {
-                                  _number = int.parse(value);
+                                widget.countChange({
+                                  "type": "textChange",
+                                  "shoppingCartId":
+                                      widget.data["shoppingCartId"],
+                                  "newCount": int.parse(value)
                                 });
                               }
                             },
                             cursorWidth: 0,
-                            controller:
-                                TextEditingController(text: _number.toString()),
+                            controller: TextEditingController(
+                                text: widget.data["count"].toString()),
                             textAlign: TextAlign.center,
                             keyboardType: TextInputType.number,
                             style: TextStyle(
@@ -136,8 +145,12 @@ class _ItemState extends State<ItemComponent> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            setState(() {
-                              _number++;
+                            // setState(() {
+                            //   _number++;
+                            // });
+                            widget.countChange({
+                              "type": "increase",
+                              "shoppingCartId": widget.data["shoppingCartId"]
                             });
                           },
                           child: Image.asset(

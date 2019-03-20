@@ -64,22 +64,22 @@ class _TabItem1State extends State<TabItem1Component> {
             ),
             new LastTimeComponent(),
             new GoodsItemComponent(
-              data: _this["goodsList"].sublist(0, 4),
+              data: _this["goodsList"]?.sublist(0, 4),
             ),
             new MustBuyComponent(
-              data: _this["goodsList"].sublist(4, 8),
+              data: _this["goodsList"]?.sublist(4, 8),
             ),
             new GoodsItemComponent(
               title: "每日必逛",
-              data: _this["goodsList"].sublist(8, 12),
+              data: _this["goodsList"]?.sublist(8, 12),
             ),
             new GoodsItemComponent(
               title: "潮玩推荐",
-              data: _this["goodsList"].sublist(4, 8),
+              data: _this["goodsList"]?.sublist(4, 8),
             ),
             new GoodsItemComponent(
               title: "品质生活",
-              data: _this["goodsList"].sublist(8, 12),
+              data: _this["goodsList"]?.sublist(8, 12),
             ),
             new GuessYourComponent(
               data: _this["goodsList"],
