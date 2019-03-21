@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HeadComponent extends StatelessWidget {
+  HeadComponent({Key key, this.data}) : super(key: key);
+  final data;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -11,7 +13,7 @@ class HeadComponent extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            "￥2000",
+            "￥${data["price"] ?? 0.00}",
             style: TextStyle(
                 fontSize: ScreenUtil().setSp(16),
                 color: Color.fromRGBO(255, 102, 102, 1)),
@@ -21,7 +23,7 @@ class HeadComponent extends StatelessWidget {
                 horizontal: ScreenUtil().setWidth(10),
                 vertical: ScreenUtil().setWidth(8)),
             child: Text(
-              "祖玛珑苦橙香氛 圣诞限量 100ML Jo Malone London Jo Malone London",
+              data["goodsName"] ?? "",
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(

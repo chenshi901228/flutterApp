@@ -21,9 +21,9 @@ class _LastTimeState extends State<LastTimeComponent>
     try {
       final res = await HttpUtil().post("/init/lastTime");
       setState(() {
-        lastTimeMap = res["lastTime"];
-        final lastTime =
-            DateTime.parse(res["lastTime"]["time"] ?? "2019-03-20 00:00:00");
+        lastTimeMap = res["lastTime"] ??
+            {"time": "2019-03-20 00:00:00", "dealOfToday": 0.00};
+        final lastTime = DateTime.parse(res["lastTime"]["time"]);
         if (lastTime.isAfter(DateTime.now())) {
           lastTimeShow = lastTime
               .difference(DateTime.now())
@@ -83,7 +83,7 @@ class _LastTimeState extends State<LastTimeComponent>
                 color: Color.fromRGBO(255, 77, 0, 1)),
           ),
           Text(
-            "今日交易：${lastTimeMap["dealOfToday"] ?? 0.00}元",
+            "今日交易：${lastTimeMap["dealOfToday"]}元",
             style: TextStyle(
                 fontSize: ScreenUtil().setSp(14),
                 color: Color.fromRGBO(255, 100, 0, 1)),

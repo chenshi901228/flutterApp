@@ -13,11 +13,12 @@ class GuessYourComponent extends StatefulWidget {
 class _GuessYourState extends State<GuessYourComponent> {
   @override
   Widget build(BuildContext context) {
-    List _this = widget.data !=null ? widget.data : [];
+    List _this = widget.data != null ? widget.data : [];
     GestureDetector item(Map goods) {
       return GestureDetector(
         onTap: () {
-          Routes.router.navigateTo(context, "/goodsDetailsPage");
+          Routes.router.navigateTo(
+              context, "${Routes.goodsDetailsPage}?goodsId=${goods["id"]}");
         },
         child: Container(
           decoration: BoxDecoration(

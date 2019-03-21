@@ -18,9 +18,10 @@ class TabItem1Component extends StatefulWidget {
 class _TabItem1State extends State<TabItem1Component> {
   final ScrollController _scrollController = ScrollController();
   bool topButton = true;
+  @override
   void initState() {
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels > 300) {
+      if (_scrollController.position.pixels > 300.0) {
         setState(() {
           topButton = false;
         });
@@ -34,6 +35,11 @@ class _TabItem1State extends State<TabItem1Component> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+  }
+
   Widget build(BuildContext context) {
     Map _this = widget.data;
     ScreenUtil.instance = ScreenUtil(width: 375, height: 667)..init(context);

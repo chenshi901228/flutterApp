@@ -3,38 +3,34 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 class SwiperComponent extends StatefulWidget {
+  SwiperComponent({Key key, this.data, this.swiperLength}) : super(key: key);
+  final data;
+  final swiperLength;
   @override
   _SwiperComponentState createState() => new _SwiperComponentState();
 }
 
 class _SwiperComponentState extends State<SwiperComponent> {
-  final List _swiperItem = [
-    Image.asset(
-      "images/banner.jpg",
-      width: ScreenUtil.screenWidth,
-      fit: BoxFit.cover,
-    ),
-    Image.asset(
-      "images/banner_1.jpg",
-      width: ScreenUtil.screenWidth,
-      fit: BoxFit.cover,
-    ),
-    Image.asset(
-      "images/banner_2.jpg",
-      width: ScreenUtil.screenWidth,
-      fit: BoxFit.cover,
-    )
-  ];
   @override
   Widget build(BuildContext context) {
+    final _this = widget.data ?? [];
+    Image swiperImg(String url) {
+      return Image.network(
+        url,
+        fit: BoxFit.cover,
+      );
+    }
+
     return Container(
       color: Colors.white,
       width: ScreenUtil.screenWidth,
       child: Swiper(
         itemBuilder: (BuildContext context, int index) {
-          return _swiperItem[index];
+          return _this.map((f) {
+            return swiperImg(f);
+          }).toList()[index];
         },
-        itemCount: 3,
+        itemCount: widget.swiperLength ?? 0,
         pagination: SwiperPagination(
             paginationPadding: EdgeInsets.symmetric(
                 horizontal: ScreenUtil().setWidth(10),

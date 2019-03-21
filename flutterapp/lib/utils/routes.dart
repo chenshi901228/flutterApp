@@ -60,7 +60,10 @@ class Routes {
     router.define(classIfyPage,
         handler: Handler(handlerFunc: (context, params) => ClassIfyPage()));
     router.define(goodsDetailsPage,
-        handler: Handler(handlerFunc: (context, params) => GoodsDetailsPage()));
+        handler: Handler(handlerFunc: (context, params) {
+      var goodsId = params["goodsId"]?.first;
+      return GoodsDetailsPage(int.parse(goodsId));
+    }));
     router.define(storePage,
         handler: Handler(handlerFunc: (context, params) => StorePage()));
     router.define(confirmOrderPage,

@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/routes.dart';
 
 class StoreComponent extends StatelessWidget {
+  StoreComponent({Key key, this.data}) : super(key: key);
+  final data;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,8 +21,9 @@ class StoreComponent extends StatelessWidget {
               children: <Widget>[
                 ClipRRect(
                   borderRadius: BorderRadius.circular(ScreenUtil().setWidth(2)),
-                  child: Image.asset(
-                    "images/storeImg.png",
+                  child: Image.network(
+                    data["store_logo"] ??
+                        'http://192.168.56.1:3001/1552615794803-TB2EN44z1uSBuNjSsziXXbq8pXa_!!47839804.jpg',
                     width: ScreenUtil().setWidth(48),
                     height: ScreenUtil().setWidth(48),
                   ),
@@ -30,8 +33,7 @@ class StoreComponent extends StatelessWidget {
                 ),
                 Container(
                   width: ScreenUtil().setWidth(220),
-                  child: Text(
-                      "Jo Malone LondonJo Malone LondonJo Malone LondonJo Malone LondonJo Malone LondonJo Malone LondonJo Malone London",
+                  child: Text(data["store"]??"",
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontSize: ScreenUtil().setSp(13))),

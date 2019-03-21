@@ -17,11 +17,12 @@ class _MustBuyState extends State<MustBuyComponent>
   final List goodsList = [];
   @override
   Widget build(BuildContext context) {
-    List _this = widget.data != null ? widget.data : [];
+    List _this = widget.data ?? [];
     GestureDetector item(Map goods) {
       return GestureDetector(
         onTap: () {
-          Routes.router.navigateTo(context, "/goodsDetailsPage");
+          Routes.router.navigateTo(
+              context, "${Routes.goodsDetailsPage}?goodsId=${goods["id"]}");
         },
         child: Container(
           width: ScreenUtil().setWidth(245),

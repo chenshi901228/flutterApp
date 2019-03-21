@@ -8,9 +8,7 @@ const baseUrl = "http://192.168.56.1:3001";
 class HttpUtil {
   post(String url, {Map params}) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    String token = preferences.getString("token") == null
-        ? ""
-        : preferences.getString("token");
+    String token = preferences.getString("token") ?? "";
     var data;
     try {
       data = await http.Client()

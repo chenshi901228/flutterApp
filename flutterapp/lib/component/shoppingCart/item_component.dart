@@ -18,7 +18,6 @@ class ItemComponent extends StatefulWidget {
 }
 
 class _ItemState extends State<ItemComponent> {
-  int _number = 1;
   @override
   Widget build(BuildContext context) {
     return Container(

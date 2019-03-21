@@ -54,6 +54,7 @@ class _ShoppingCartState extends State<ShoppingCartPage>
     print(res);
   }
 
+  @override
   void initState() {
     getList();
     super.initState();
@@ -78,8 +79,8 @@ class _ShoppingCartState extends State<ShoppingCartPage>
       }
     }).toList()
       ..retainWhere((test) => test.runtimeType == int);
-    final res = await HttpUtil()
-        .post("/shoppingCart/deleteOne", params: {"listId": willDeleteList});
+    final res = await HttpUtil().post("/shoppingCart/deleteOne",
+        params: {"shoppingCartId": willDeleteList});
     if (res["code"] == 1) {
       setState(() {
         data.retainWhere((f) => f["isSelect"] == false);

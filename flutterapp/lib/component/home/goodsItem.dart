@@ -18,7 +18,8 @@ class _GoodsItemState extends State<GoodsItemComponent> {
     GestureDetector good(Map goods) {
       return GestureDetector(
         onTap: () {
-          Routes.router.navigateTo(context, "/goodsDetailsPage");
+          Routes.router.navigateTo(
+              context, "${Routes.goodsDetailsPage}?goodsId=${goods["id"]}");
         },
         child: Container(
           width: ScreenUtil().setWidth(178),
