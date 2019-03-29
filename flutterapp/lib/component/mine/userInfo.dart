@@ -3,15 +3,52 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/routes.dart';
 
+class BannerDiy extends CustomPainter {
+  var _paint = new Paint()
+    ..color = Color.fromRGBO(74, 74, 74, 1)
+    ..strokeCap = StrokeCap.round
+    ..isAntiAlias = true
+    ..style = PaintingStyle.fill
+    ..strokeWidth = 2.0;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    // 绘制代码
+    Path path = new Path();
+    path.moveTo(0.0, 0.0);
+    path.lineTo(ScreenUtil.screenWidth / 2, 0.0);
+    path.lineTo(ScreenUtil.screenWidth / 2, ScreenUtil().setWidth(200));
+    path.lineTo(0.0, ScreenUtil().setWidth(200));
+    path.close();
+    canvas.drawPath(path, _paint);
+    path.moveTo(0.0, ScreenUtil().setWidth(200));
+    path.conicTo(ScreenUtil.screenWidth / 4, ScreenUtil().setWidth(230),
+        ScreenUtil.screenWidth / 2, ScreenUtil().setWidth(200), 1.0);
+    path.close();
+    canvas.drawPath(path, _paint);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
 class UserInfoComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
         Container(
+          height: ScreenUtil().setWidth(216),
+          color: Colors.white,
+        ),
+        CustomPaint(
+          painter: BannerDiy(),
+        ),
+        Container(
           width: ScreenUtil.screenWidth,
           height: ScreenUtil().setWidth(216),
-          color: Color.fromRGBO(74, 74, 74, 1),
           padding: EdgeInsets.only(top: ScreenUtil().setWidth(41)),
           child: Column(
             children: <Widget>[

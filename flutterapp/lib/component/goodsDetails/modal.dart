@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import './diyRadio.dart';
 
+import '../../blocs/main_bloc.dart';
+
 class Modal extends StatefulWidget {
+  Modal({Key key, this.data}) : super(key: key);
+  final data;
   @override
   _Modal createState() => new _Modal();
 }
 
 class _Modal extends State<Modal> {
-  String _checkedValue = "100ml";
+  String _checkedValue = "";
   int _number = 1;
+  String _checkedPrice = "";
   @override
   Widget build(BuildContext context) {
+    final _this = widget.data;
+    final bloc = BlocProviderMain.of(context);
     Container sizeCheckItem() {
       return Container(
         child: Column(
@@ -27,59 +35,19 @@ class _Modal extends State<Modal> {
               height: ScreenUtil().setWidth(10),
             ),
             Wrap(
-              spacing: ScreenUtil().setWidth(10),
-              runSpacing: ScreenUtil().setWidth(10),
-              children: <Widget>[
-                DiyRadioBtn(
-                    value: "100ml",
-                    groupValue: _checkedValue,
-                    onChanged: (value) {
-                      setState(() {
-                        _checkedValue = value;
+                spacing: ScreenUtil().setWidth(10),
+                runSpacing: ScreenUtil().setWidth(10),
+                children: _this["priceAndSize"].map<Widget>((f) {
+                  return DiyRadioBtn(
+                      value: f["size"],
+                      groupValue: _checkedValue,
+                      onChanged: (value) {
+                        setState(() {
+                          _checkedValue = value;
+                          _checkedPrice = f["price"];
+                        });
                       });
-                    }),
-                DiyRadioBtn(
-                    value: "50ml",
-                    groupValue: _checkedValue,
-                    onChanged: (value) {
-                      setState(() {
-                        _checkedValue = value;
-                      });
-                    }),
-                DiyRadioBtn(
-                    value: "150ml",
-                    groupValue: _checkedValue,
-                    onChanged: (value) {
-                      setState(() {
-                        _checkedValue = value;
-                      });
-                    }),
-                DiyRadioBtn(
-                    value: "250ml",
-                    groupValue: _checkedValue,
-                    onChanged: (value) {
-                      setState(() {
-                        _checkedValue = value;
-                      });
-                    }),
-                DiyRadioBtn(
-                    value: "200ml",
-                    groupValue: _checkedValue,
-                    onChanged: (value) {
-                      setState(() {
-                        _checkedValue = value;
-                      });
-                    }),
-                DiyRadioBtn(
-                    value: "10ml",
-                    groupValue: _checkedValue,
-                    onChanged: (value) {
-                      setState(() {
-                        _checkedValue = value;
-                      });
-                    }),
-              ],
-            )
+                }).toList())
           ],
         ),
       );
@@ -175,7 +143,23 @@ class _Modal extends State<Modal> {
                       EdgeInsets.symmetric(vertical: ScreenUtil().setWidth(10)),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.pop(context);
+                      if (_checkedValue.isEmpty) {
+                        Fluttertoast.showToast(
+                            msg: "请选择规格！！！",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIos: 1,
+                            backgroundColor: Color.fromRGBO(0, 0, 0, 0.6),
+                            textColor: Colors.white,
+                            fontSize: ScreenUtil().setSp(12));
+                      } else {
+                        bloc.goodsSizeChoose({
+                          "price": _checkedPrice,
+                          "size": _checkedValue,
+                          "count": _number
+                        });
+                        Navigator.pop(context);
+                      }
                     },
                     child: Image.asset(
                       "images/icon/ensureBtn.png",
@@ -194,8 +178,8 @@ class _Modal extends State<Modal> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      Image.asset(
-                        "images/goods_img.jpg",
+                      Image.network(
+                        _this["goodsimgs"][0],
                         width: ScreenUtil().setWidth(90),
                         height: ScreenUtil().setWidth(90),
                       ),
@@ -205,7 +189,7 @@ class _Modal extends State<Modal> {
                       Column(
                         children: <Widget>[
                           Text(
-                            "￥1260.00",
+                            "￥${_checkedPrice == "" ? _this["price"] : _checkedPrice}",
                             style: TextStyle(
                                 fontSize: ScreenUtil().setSp(16),
                                 color: Color.fromRGBO(255, 102, 102, 1)),

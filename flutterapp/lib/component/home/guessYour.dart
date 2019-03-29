@@ -26,11 +26,14 @@ class _GuessYourState extends State<GuessYourComponent> {
               borderRadius: BorderRadius.circular(ScreenUtil().setWidth(3))),
           child: Column(
             children: <Widget>[
-              Image.network(
-                goods["goodsImg"],
+              FadeInImage(
+                image: NetworkImage(goods["goodsImg"]),
+                placeholder: AssetImage("images/imgback.jpg"),
                 width: ScreenUtil().setWidth(177),
                 height: ScreenUtil().setWidth(177),
                 fit: BoxFit.fill,
+                fadeInDuration: Duration(milliseconds: 100),
+                fadeOutDuration: Duration(milliseconds: 100),
               ),
               Container(
                 width: ScreenUtil().setWidth(177),

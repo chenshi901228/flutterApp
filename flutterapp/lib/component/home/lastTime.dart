@@ -77,7 +77,7 @@ class _LastTimeState extends State<LastTimeComponent>
                 color: Color.fromRGBO(155, 155, 155, 1)),
           ),
           Text(
-            lastTimeShow.toString(),
+            lastTimeShow.toString() ?? "00:00:00",
             style: TextStyle(
                 fontSize: ScreenUtil().setSp(36),
                 color: Color.fromRGBO(255, 77, 0, 1)),

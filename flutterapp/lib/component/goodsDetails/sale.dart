@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../blocs/main_bloc.dart';
+
 import './modal.dart';
 
 class SaleComponent extends StatefulWidget {
+  SaleComponent({Key key, this.data}) : super(key: key);
+  final data;
   @override
   _SaleState createState() => new _SaleState();
 }
@@ -14,12 +18,15 @@ class _SaleState extends State<SaleComponent> {
         barrierDismissible_cs: false,
         context: context,
         builder: (context) {
-          return Modal();
+          return Modal(
+            data: widget.data,
+          );
         });
   }
 
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProviderMain.of(context);
     Container salesItem() {
       return Container(
         height: ScreenUtil().setWidth(44),
@@ -67,22 +74,30 @@ class _SaleState extends State<SaleComponent> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Container(
-                child: Row(
-                  children: <Widget>[
-                    Text("已选",
-                        style: TextStyle(
-                            fontSize: ScreenUtil().setSp(14),
-                            color: Color.fromRGBO(102, 102, 102, 1))),
-                    SizedBox(
-                      width: ScreenUtil().setWidth(12),
+              StreamBuilder(
+                stream: bloc.goodsSizestream,
+                initialData: bloc.goodsSizeChoice,
+                builder: (context, snapshot) {
+                  return Container(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text("${snapshot.data["size"] == null ? "选择规格" : "已选"}",
+                            style: TextStyle(
+                                fontSize: ScreenUtil().setSp(14),
+                                color: Color.fromRGBO(102, 102, 102, 1))),
+                        SizedBox(
+                          width: ScreenUtil().setWidth(12),
+                        ),
+                        Text(
+                            "${snapshot.data["size"] ?? ""} ${snapshot.data["size"] != null ? "×" : ""} ${snapshot.data["count"] ?? ""}",
+                            style: TextStyle(
+                                fontSize: ScreenUtil().setSp(13),
+                                color: Color.fromRGBO(102, 102, 102, 1))),
+                      ],
                     ),
-                    Text("100ml × 1",
-                        style: TextStyle(
-                            fontSize: ScreenUtil().setSp(13),
-                            color: Color.fromRGBO(102, 102, 102, 1))),
-                  ],
-                ),
+                  );
+                },
               ),
               Image.asset(
                 "images/icon/right_icon.png",

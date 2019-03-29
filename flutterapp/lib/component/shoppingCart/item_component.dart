@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../blocs/main_bloc.dart';
 
 class ItemComponent extends StatefulWidget {
-  ItemComponent(
-      {Key key,
-      this.data,
-      this.isSelectAll: false,
-      this.handle,
-      this.countChange})
-      : super(key: key);
+  ItemComponent({Key key, this.data}) : super(key: key);
   final data;
-  final isSelectAll;
-  final handle;
-  final countChange;
   @override
   _ItemState createState() => new _ItemState();
 }
@@ -20,6 +12,7 @@ class ItemComponent extends StatefulWidget {
 class _ItemState extends State<ItemComponent> {
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProviderMain.of(context);
     return Container(
       color: Colors.white,
       margin: EdgeInsets.only(top: ScreenUtil().setWidth(10)),
@@ -29,7 +22,7 @@ class _ItemState extends State<ItemComponent> {
         children: <Widget>[
           GestureDetector(
             onTap: () {
-              widget.handle(widget.data["id"]);
+              bloc.goodsSelectOne(widget.data["shoppingCartId"]);
             },
             child: Image.asset(
               widget.data["isSelect"]
@@ -59,7 +52,7 @@ class _ItemState extends State<ItemComponent> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(widget.data["goodsName"],
+                      Text(widget.data["goods"]["goodsName"],
                           softWrap: true,
                           maxLines: 2,
                           style: TextStyle(
@@ -90,16 +83,14 @@ class _ItemState extends State<ItemComponent> {
                       children: <Widget>[
                         GestureDetector(
                           onTap: () {
-                            widget.countChange({
+                            bloc.countChange({
                               "type": "decrease",
                               "shoppingCartId": widget.data["shoppingCartId"]
                             });
                           },
                           child: Image.asset(
                             "images/icon/decrease.png",
-                            color: widget.data["count"] == 1
-                                ? null
-                                : Colors.grey[600],
+                            color: Colors.grey[600],
                             width: ScreenUtil().setWidth(17),
                             height: ScreenUtil().setWidth(17),
                           ),
@@ -112,21 +103,11 @@ class _ItemState extends State<ItemComponent> {
                               horizontal: ScreenUtil().setWidth(1)),
                           child: TextField(
                             onChanged: (value) {
-                              if (value == "" || int.parse(value) < 1) {
-                                widget.countChange({
-                                  "type": "textChange",
-                                  "shoppingCartId":
-                                      widget.data["shoppingCartId"],
-                                  "newCount": 1
-                                });
-                              } else {
-                                widget.countChange({
-                                  "type": "textChange",
-                                  "shoppingCartId":
-                                      widget.data["shoppingCartId"],
-                                  "newCount": int.parse(value)
-                                });
-                              }
+                              bloc.countChange({
+                                "type": "textChange",
+                                "newCount": int.parse(value),
+                                "shoppingCartId": widget.data["shoppingCartId"],
+                              });
                             },
                             cursorWidth: 0,
                             controller: TextEditingController(
@@ -144,10 +125,7 @@ class _ItemState extends State<ItemComponent> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            // setState(() {
-                            //   _number++;
-                            // });
-                            widget.countChange({
+                            bloc.countChange({
                               "type": "increase",
                               "shoppingCartId": widget.data["shoppingCartId"]
                             });

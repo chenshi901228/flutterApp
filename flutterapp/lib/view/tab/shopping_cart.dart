@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../utils/httpRequest.dart';
-import '../../utils/routes.dart';
 import '../../component/shoppingCart/item_component.dart';
+
+import '../../blocs/main_bloc.dart';
+
+bool shoppingCartInit = true;
 
 class ShoppingCartPage extends StatefulWidget {
   @override
@@ -14,51 +16,8 @@ class _ShoppingCartState extends State<ShoppingCartPage>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  List data = [];
-  bool _isSelectAll = false;
   String _headerRightTest = "管理";
   bool _clearOrDelete = true;
-  int newCount = 0;
-
-  getList() async {
-    try {
-      final res =
-          await HttpUtil().post("/shoppingCart/list", params: {"adminId": 1});
-      if (res["code"] == 1) {
-        final list = res["list"].map((f) {
-          f["isSelect"] = false;
-          return f;
-        }).toList();
-        setState(() {
-          data = list;
-        });
-      } else {
-        showDialog<Null>(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                content: Text("登录失效，请重新登录"),
-              );
-            }).then((val) {
-          Routes.router.navigateTo(context, "/login");
-        });
-      }
-    } catch (error) {
-      print(error);
-    }
-  }
-
-  editOne(int id, int count) async {
-    final res = await HttpUtil()
-        .post("/shoppingCart/edit", params: {"id": id, "count": count});
-    print(res);
-  }
-
-  @override
-  void initState() {
-    getList();
-    super.initState();
-  }
 
   clearOrDeleteFuc(String text) {
     setState(() {
@@ -72,24 +31,7 @@ class _ShoppingCartState extends State<ShoppingCartPage>
     });
   }
 
-  deletemany() async {
-    List willDeleteList = data.map((f) {
-      if (f["isSelect"]) {
-        return f["shoppingCartId"];
-      }
-    }).toList()
-      ..retainWhere((test) => test.runtimeType == int);
-    final res = await HttpUtil().post("/shoppingCart/deleteOne",
-        params: {"shoppingCartId": willDeleteList});
-    if (res["code"] == 1) {
-      setState(() {
-        data.retainWhere((f) => f["isSelect"] == false);
-      });
-    }
-    Navigator.pop(context);
-  }
-
-  deleteFuc() {
+  deleteFuc(List data, bloc) {
     final t = data.any((f) {
       if (f["isSelect"]) {
         return true;
@@ -163,7 +105,7 @@ class _ShoppingCartState extends State<ShoppingCartPage>
                               onTap: () {
                                 data.length == 0 || !t
                                     ? Navigator.pop(context)
-                                    : deletemany();
+                                    : bloc.deleteSome(context);
                               },
                               child: Container(
                                 height: ScreenUtil().setWidth(48),
@@ -188,65 +130,19 @@ class _ShoppingCartState extends State<ShoppingCartPage>
     );
   }
 
-  selectOneFuc(value) {
-    setState(() {
-      int number = 0;
-      data.forEach((item) {
-        if (item["id"] == value) {
-          item["isSelect"] = !item["isSelect"];
-        }
-      });
-      data.forEach((item) {
-        if (item["isSelect"] == false) {
-          _isSelectAll = false;
-        } else {
-          number++;
-          if (number == data.length) {
-            _isSelectAll = true;
-          }
-        }
-      });
-    });
-  }
-
-  countChange(value) {
-    switch (value["type"]) {
-      case "decrease":
-        setState(() {
-          data.forEach((f) {
-            if (f["shoppingCartId"] == value["shoppingCartId"] &&
-                f["count"] > 1) {
-              f["count"]--;
-              newCount = f["count"];
-            }
-          });
-        });
-        break;
-      case "increase":
-        setState(() {
-          data.forEach((f) {
-            if (f["shoppingCartId"] == value["shoppingCartId"]) {
-              f["count"]++;
-              newCount = f["count"];
-            }
-          });
-        });
-        break;
-      default:
-        setState(() {
-          data.forEach((f) {
-            if (f["shoppingCartId"] == value["shoppingCartId"]) {
-              f["count"] = value["newCount"];
-              newCount = f["count"];
-            }
-          });
-        });
-    }
-    editOne(value["shoppingCartId"], newCount);
+  void dispose() {
+    super.dispose();
+    shoppingCartInit = true;
   }
 
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProviderMain.of(context);
+    if (shoppingCartInit) {
+      shoppingCartInit = false;
+      bloc.initShoppingCart(context);
+    }
+    // 结算
     GestureDetector clearBtn() {
       return GestureDetector(
         onTap: () {
@@ -266,23 +162,31 @@ class _ShoppingCartState extends State<ShoppingCartPage>
       );
     }
 
-    GestureDetector deleteBtn() {
-      return GestureDetector(
-        onTap: () {
-          deleteFuc();
+    // 删除
+    StreamBuilder deleteBtn() {
+      return StreamBuilder(
+        stream: bloc.shoppingCartstream,
+        initialData: bloc.shoppingCartList,
+        builder: (context, snapshot) {
+          return GestureDetector(
+            onTap: () {
+              deleteFuc(snapshot.data, bloc);
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                  horizontal: ScreenUtil().setWidth(26),
+                  vertical: ScreenUtil().setWidth(6)),
+              decoration: BoxDecoration(
+                  border: Border.all(color: Color.fromRGBO(255, 85, 85, 1)),
+                  borderRadius:
+                      BorderRadius.circular(ScreenUtil().setWidth(16))),
+              child: Text("删除",
+                  style: TextStyle(
+                      fontSize: ScreenUtil().setSp(13),
+                      color: Color.fromRGBO(255, 85, 85, 1))),
+            ),
+          );
         },
-        child: Container(
-          padding: EdgeInsets.symmetric(
-              horizontal: ScreenUtil().setWidth(26),
-              vertical: ScreenUtil().setWidth(6)),
-          decoration: BoxDecoration(
-              border: Border.all(color: Color.fromRGBO(255, 85, 85, 1)),
-              borderRadius: BorderRadius.circular(ScreenUtil().setWidth(16))),
-          child: Text("删除",
-              style: TextStyle(
-                  fontSize: ScreenUtil().setSp(13),
-                  color: Color.fromRGBO(255, 85, 85, 1))),
-        ),
       );
     }
 
@@ -296,7 +200,7 @@ class _ShoppingCartState extends State<ShoppingCartPage>
           centerTitle: true,
           automaticallyImplyLeading: false,
           title: Text(
-            "购物车(${data.length})",
+            "购物车",
             style: TextStyle(
                 fontSize: ScreenUtil().setSp(16),
                 color: Color.fromRGBO(51, 51, 51, 1)),
@@ -324,16 +228,21 @@ class _ShoppingCartState extends State<ShoppingCartPage>
         preferredSize: Size.fromHeight(ScreenUtil().setWidth(44)),
       ),
       // 内容区-----------------------------------------------------------------------
-      body: ListView(
-        padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(10)),
-        children: data.map((item) {
-          return new ItemComponent(
-            data: item,
-            isSelectAll: _isSelectAll,
-            handle: (value) => selectOneFuc(value),
-            countChange: (value) => countChange(value),
-          );
-        }).toList(),
+      body: StreamBuilder(
+        stream: bloc.shoppingCartstream,
+        initialData: bloc.shoppingCartList,
+        builder: (context, snapshot) {
+          return snapshot.data != null
+              ? ListView(
+                  padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(10)),
+                  children: snapshot.data.map<Widget>((item) {
+                    return new ItemComponent(
+                      data: item,
+                    );
+                  }).toList(),
+                )
+              : SizedBox();
+        },
       ),
       bottomNavigationBar: BottomAppBar(
         elevation: 0,
@@ -349,22 +258,22 @@ class _ShoppingCartState extends State<ShoppingCartPage>
               Row(
                 children: <Widget>[
                   GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _isSelectAll = !_isSelectAll;
-                        data.forEach((item) {
-                          item["isSelect"] = _isSelectAll;
-                        });
-                      });
-                    },
-                    child: Image.asset(
-                      _isSelectAll
-                          ? "images/icon/isactive.png"
-                          : "images/icon/noactive.png",
-                      width: ScreenUtil().setWidth(15),
-                      height: ScreenUtil().setWidth(15),
-                    ),
-                  ),
+                      onTap: () {
+                        bloc.selectAll();
+                      },
+                      child: StreamBuilder(
+                        stream: bloc.isSelectAllstream,
+                        initialData: bloc.isSelectAll,
+                        builder: (context, snapshot) {
+                          return Image.asset(
+                            snapshot.data
+                                ? "images/icon/isactive.png"
+                                : "images/icon/noactive.png",
+                            width: ScreenUtil().setWidth(15),
+                            height: ScreenUtil().setWidth(15),
+                          );
+                        },
+                      )),
                   SizedBox(
                     width: ScreenUtil().setWidth(10),
                   ),

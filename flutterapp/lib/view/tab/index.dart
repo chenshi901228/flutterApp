@@ -24,6 +24,11 @@ class _IndexState extends State<IndexPage> {
     });
   }
 
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil(width: 375, height: 667)..init(context);

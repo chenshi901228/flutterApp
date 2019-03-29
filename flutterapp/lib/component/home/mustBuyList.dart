@@ -34,12 +34,13 @@ class _MustBuyState extends State<MustBuyComponent>
               borderRadius: BorderRadius.circular(ScreenUtil().setWidth(2))),
           child: Row(
             children: <Widget>[
-              Image.network(
-                goods["goodsImg"],
-                width: ScreenUtil().setWidth(65),
-                height: ScreenUtil().setWidth(83),
-                // fit: BoxFit.fill,
-              ),
+              FadeInImage(
+                  image: NetworkImage(goods["goodsImg"]),
+                  placeholder: AssetImage("images/imgback.jpg"),
+                  width: ScreenUtil().setWidth(65),
+                  height: ScreenUtil().setWidth(83),
+                  fadeInDuration: Duration(milliseconds: 100),
+                  fadeOutDuration: Duration(milliseconds: 100)),
               Padding(
                   padding: EdgeInsets.only(left: ScreenUtil().setWidth(10)),
                   child: Container(

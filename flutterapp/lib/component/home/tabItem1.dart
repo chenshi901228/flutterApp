@@ -15,29 +15,34 @@ class TabItem1Component extends StatefulWidget {
   _TabItem1State createState() => new _TabItem1State();
 }
 
-class _TabItem1State extends State<TabItem1Component> {
+class _TabItem1State extends State<TabItem1Component>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   final ScrollController _scrollController = ScrollController();
   bool topButton = true;
+  _onscrollController() {
+    if (_scrollController.position.pixels > 300.0) {
+      setState(() {
+        topButton = false;
+      });
+    } else {
+      setState(() {
+        topButton = true;
+      });
+    }
+  }
+
   @override
   void initState() {
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels > 300.0) {
-        setState(() {
-          topButton = false;
-        });
-      } else {
-        setState(() {
-          topButton = true;
-        });
-      }
-    });
+    _scrollController.addListener(_onscrollController);
     super.initState();
   }
 
   @override
   void dispose() {
     super.dispose();
-    _scrollController.dispose();
+    _scrollController.removeListener(_onscrollController);
   }
 
   Widget build(BuildContext context) {
@@ -58,40 +63,42 @@ class _TabItem1State extends State<TabItem1Component> {
               height: ScreenUtil().setWidth(32),
             ),
           )),
-      body: Container(
-        child: ListView(
-          controller: _scrollController,
-          children: <Widget>[
-            new SwiperComponent(
-              data: _this["bannerImgsList"],
-            ),
-            new ClassifyComponent(
-              data: _this["classifyList"],
-            ),
-            new LastTimeComponent(),
-            new GoodsItemComponent(
-              data: _this["goodsList"]?.sublist(0, 4),
-            ),
-            new MustBuyComponent(
-              data: _this["goodsList"]?.sublist(4, 8),
-            ),
-            new GoodsItemComponent(
-              title: "每日必逛",
-              data: _this["goodsList"]?.sublist(8, 12),
-            ),
-            new GoodsItemComponent(
-              title: "潮玩推荐",
-              data: _this["goodsList"]?.sublist(4, 8),
-            ),
-            new GoodsItemComponent(
-              title: "品质生活",
-              data: _this["goodsList"]?.sublist(8, 12),
-            ),
-            new GuessYourComponent(
-              data: _this["goodsList"],
-            )
-          ],
-        ),
+      body: CustomScrollView(
+        controller: _scrollController,
+        slivers: <Widget>[
+          SliverList(
+            delegate: SliverChildListDelegate([
+              new SwiperComponent(
+                data: _this["bannerImgsList"],
+              ),
+              new ClassifyComponent(
+                data: _this["classifyList"],
+              ),
+              new LastTimeComponent(),
+              new GoodsItemComponent(
+                data: _this["goodsList"]?.sublist(0, 4),
+              ),
+              new MustBuyComponent(
+                data: _this["goodsList"]?.sublist(4, 8),
+              ),
+              new GoodsItemComponent(
+                title: "每日必逛",
+                data: _this["goodsList"]?.sublist(8, 12),
+              ),
+              new GoodsItemComponent(
+                title: "潮玩推荐",
+                data: _this["goodsList"]?.sublist(4, 8),
+              ),
+              new GoodsItemComponent(
+                title: "品质生活",
+                data: _this["goodsList"]?.sublist(8, 12),
+              ),
+              new GuessYourComponent(
+                data: _this["goodsList"],
+              )
+            ]),
+          )
+        ],
       ),
     );
   }

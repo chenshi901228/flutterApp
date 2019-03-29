@@ -2,8 +2,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-const baseUrl = "http://192.168.56.1:3001";
-// const baseUrl = "http://flutterapi.chenshiservice.cn";
+// const baseUrl = "http://192.168.56.1:3001";
+const baseUrl = "http://flutterapi.chenshiservice.cn";
 
 class HttpUtil {
   post(String url, {Map params}) async {

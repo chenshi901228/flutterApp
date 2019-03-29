@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../component/home/tabItem1.dart';
 
-import '../../utils/routes.dart';
-import '../../utils/httpRequest.dart';
+import '../../blocs/main_bloc.dart';
+
+
+bool initHome = true;
 
 class HomePage extends StatefulWidget {
   @override
@@ -13,38 +15,23 @@ class HomePage extends StatefulWidget {
 class _HomeState extends State<HomePage> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  Map initData = {};
-  _getToken() async {
-    try {
-      final data = await HttpUtil().post("/init/initHomePage");
-      if (data["code"] == 0) {
-        showDialog<Null>(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                content: Text("登录失效，请重新登录"),
-              );
-            }).then((val) {
-          Routes.router.navigateTo(context, "/login");
-        });
-      } else {
-        setState(() {
-          initData = data;
-        });
-      }
-    } catch (err) {
-      print(err);
-    }
-  }
 
-  void initState() {
-    _getToken();
+  void initState(){
     super.initState();
+  }
+  void dispose() {
+    super.dispose();
+    initHome = true;
   }
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil(width: 375, height: 667)..init(context);
+    final blocMain = BlocProviderMain.of(context);
+    if (initHome) {
+      initHome = false;
+      blocMain.init(context);
+    }
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -125,8 +112,14 @@ class _HomeState extends State<HomePage> with AutomaticKeepAliveClientMixin {
             )),
         body: TabBarView(
           children: <Widget>[
-            TabItem1Component(
-              data: initData,
+            StreamBuilder(
+              stream: blocMain.stream,
+              initialData: blocMain.value,
+              builder: (context, snapshot) {
+                return TabItem1Component(
+                  data: snapshot.data,
+                );
+              },
             ),
             Text("data"),
             Text("data"),

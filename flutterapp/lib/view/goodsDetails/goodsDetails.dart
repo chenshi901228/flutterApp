@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../utils/routes.dart';
-import '../../utils/httpRequest.dart';
 
 import '../../component/goodsDetails/swiper.dart';
 import '../../component/goodsDetails/head.dart';
 import '../../component/goodsDetails/sale.dart';
 import '../../component/goodsDetails/store.dart';
+
+import '../../blocs/main_bloc.dart';
+
+bool isGoodDetailsInit = true;
 
 class GoodsDetailsPage extends StatefulWidget {
   final int goodsId;
@@ -20,57 +22,38 @@ class GoodsDetailsPage extends StatefulWidget {
 class _GoodsDetailsState extends State<GoodsDetailsPage> {
   final ScrollController _scrollController = ScrollController();
   bool _isHideBanner = false;
-  Map data = {};
 
-  getGoodsDetails() async {
-    final goodsId = widget.goodsId;
-    try {
-      final res =
-          await HttpUtil().post("/goods/getOne", params: {"id": goodsId});
-      if (res["code"] == 1) {
-        setState(() {
-          data = res["goodsDetails"];
-        });
-      } else {
-        showDialog<Null>(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                content: Text("登录失效，请重新登录"),
-              );
-            }).then((val) {
-          Routes.router.navigateTo(context, "/login");
-        });
-      }
-    } catch (error) {
-      print(error);
+  _onscrollController() {
+    if (_scrollController.position.pixels > 270.0) {
+      setState(() {
+        _isHideBanner = true;
+      });
+    } else {
+      setState(() {
+        _isHideBanner = false;
+      });
     }
   }
 
   @override
   void initState() {
     super.initState();
-    getGoodsDetails();
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels > 270.0) {
-        setState(() {
-          _isHideBanner = true;
-        });
-      } else {
-        setState(() {
-          _isHideBanner = false;
-        });
-      }
-    });
+    _scrollController.addListener(_onscrollController);
   }
 
   @override
   void dispose() {
     super.dispose();
-    _scrollController.dispose();
+    isGoodDetailsInit = true;
+    _scrollController.removeListener(_onscrollController);
   }
 
   Widget build(BuildContext context) {
+    final blocMain = BlocProviderMain.of(context);
+    if (isGoodDetailsInit) {
+      isGoodDetailsInit = false;
+      blocMain.goodsDetailsInit(context, widget.goodsId);
+    }
     return Scaffold(
       backgroundColor: Color.fromRGBO(243, 243, 243, 1),
       bottomNavigationBar: BottomAppBar(
@@ -83,14 +66,7 @@ class _GoodsDetailsState extends State<GoodsDetailsPage> {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
-                  Fluttertoast.showToast(
-                      msg: "添加成功，在购物车等您~",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIos: 1,
-                      backgroundColor: Color.fromRGBO(0, 0, 0, 0.6),
-                      textColor: Colors.white,
-                      fontSize: ScreenUtil().setSp(12));
+                  blocMain.addToShoppingCart();
                 },
                 child: Image.asset(
                   "images/icon/addShopping.png",
@@ -123,9 +99,16 @@ class _GoodsDetailsState extends State<GoodsDetailsPage> {
               opacity: _isHideBanner ? 1 : 0,
               child: Padding(
                 padding: EdgeInsets.all(ScreenUtil().setWidth(6)),
-                child: Image.network(data["goodsimgs"] != null
-                    ? data["goodsimgs"][0]
-                    : 'http://192.168.56.1:3001/1552615794803-TB2EN44z1uSBuNjSsziXXbq8pXa_!!47839804.jpg'),
+                child: StreamBuilder(
+                    stream: blocMain.goodsstream,
+                    initialData: blocMain.goodsDetails,
+                    builder: (context, snapshot) {
+                      return snapshot.data["goodsimgs"] != null
+                          ? Image.network(snapshot.data["goodsimgs"][0])
+                          : Center(
+                              child: Icon(Icons.equalizer),
+                            );
+                    }),
               ),
             ),
             centerTitle: true,
@@ -160,30 +143,60 @@ class _GoodsDetailsState extends State<GoodsDetailsPage> {
             flexibleSpace: AnimatedOpacity(
               duration: Duration(milliseconds: 300),
               opacity: _isHideBanner ? 0 : 1,
-              child: SwiperComponent(
-                data: data["goodsimgs"],
-                swiperLength: data["goodsimgs"]?.length,
+              child: StreamBuilder(
+                stream: blocMain.goodsstream,
+                initialData: blocMain.goodsDetails,
+                builder: (context, snapshot) {
+                  return SwiperComponent(data: snapshot.data["goodsimgs"]);
+                },
               ),
             ),
           ),
-          SliverList(
-            delegate: SliverChildListDelegate(<Widget>[
-              new HeadComponent(
-                data: {"price": data["price"], "goodsName": data["goodsName"]},
-              ),
-              new SaleComponent(),
-              new StoreComponent(
-                data: data,
-              ),
-              data["goodsimgs"] != null
-                  ? Column(
-                      children: data["goodsimgs"].map<Widget>((f) {
-                        return Image.network(f);
-                      }).toList(),
-                    )
-                  : SizedBox()
-            ]),
-          ),
+          StreamBuilder(
+            stream: blocMain.goodsstream,
+            initialData: blocMain.goodsDetails,
+            builder: (context, snapshot) {
+              final _this = snapshot.data;
+              return SliverList(
+                delegate: SliverChildBuilderDelegate((context, int index) {
+                  if (index == 0) {
+                    return StreamBuilder(
+                      stream: blocMain.goodsSizestream,
+                      initialData: blocMain.goodsSizeChoice,
+                      builder: (context, snapshot) {
+                        return new HeadComponent(
+                          data: {
+                            "price": snapshot.data["price"] != null
+                                ? snapshot.data["price"]
+                                : _this["price"],
+                            "goodsName": _this["goodsName"]
+                          },
+                        );
+                      },
+                    );
+                  } else if (index == 1) {
+                    return new SaleComponent(
+                      data: _this,
+                    );
+                  } else if (index == 2) {
+                    return new StoreComponent(
+                      data: _this,
+                    );
+                  } else if (index == 3) {
+                    return _this["goodsimgs"] != null
+                        ? Column(
+                            children: _this["goodsimgs"].map<Widget>((f) {
+                              return Image.network(f);
+                            }).toList(),
+                          )
+                        : SizedBox();
+                  } else {
+                    return null;
+                  }
+                }),
+              );
+            },
+          )
         ],
       ),
     );

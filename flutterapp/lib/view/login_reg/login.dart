@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../utils/routes.dart';
-import '../../utils/httpRequest.dart';
+
+import '../../blocs/main_bloc.dart';
+
+bool isLogin = true;
 
 class Login extends StatefulWidget {
   @override
@@ -15,7 +18,7 @@ class _LoginState extends State<Login> {
 
   String phone;
   String password;
-  void loginBtn() async {
+  void loginBtn(bloc) async {
     final form = _formKey.currentState;
     form.save();
     RegExp mobile =
@@ -28,25 +31,14 @@ class _LoginState extends State<Login> {
       Fluttertoast.showToast(msg: "请输入密码");
     } else {
       Map params = {"phone": int.parse(phone), "password": password};
-      try {
-        final data = await HttpUtil().post("/admin/login", params: params);
-        if (data["code"] == 1) {
-          SharedPreferences preferences = await SharedPreferences.getInstance();
-          preferences.setString("token", data["token"]);
-          form.reset();
-          Routes.router.navigateTo(context, '/');
-        } else {
-          Fluttertoast.showToast(msg: data["msg"]);
-        }
-      } catch (error) {
-        print(error);
-      }
+      bloc.login(params, form, context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     ScreenUtil.instance = ScreenUtil(width: 375, height: 667)..init(context);
+    final blocLogin = BlocProviderMain.of(context);
     return Scaffold(
       appBar: null,
       resizeToAvoidBottomPadding: false, //防止输入框获取焦点顶掉内容
@@ -168,8 +160,7 @@ class _LoginState extends State<Login> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    loginBtn();
-                    // Routes.router.navigateTo(context, '/indexPage');
+                    loginBtn(blocLogin);
                   },
                   child: Container(
                     margin: EdgeInsets.only(top: ScreenUtil().setWidth(104)),

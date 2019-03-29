@@ -22,13 +22,15 @@ class _GoodsItemState extends State<GoodsItemComponent> {
               context, "${Routes.goodsDetailsPage}?goodsId=${goods["id"]}");
         },
         child: Container(
-          width: ScreenUtil().setWidth(178),
-          height: ScreenUtil().setWidth(120),
-          child: Image.network(
-            goods["goodsImg"],
-            fit: BoxFit.fill,
-          ),
-        ),
+            width: ScreenUtil().setWidth(178),
+            height: ScreenUtil().setWidth(120),
+            child: FadeInImage(
+              image: NetworkImage(goods["goodsImg"]),
+              placeholder: AssetImage("images/imgback.jpg"),
+              fit: BoxFit.fill,
+              fadeInDuration: Duration(milliseconds: 100),
+              fadeOutDuration: Duration(milliseconds: 100),
+            )),
       );
     }
 
