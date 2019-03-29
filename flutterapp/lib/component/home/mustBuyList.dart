@@ -36,7 +36,7 @@ class _MustBuyState extends State<MustBuyComponent>
             children: <Widget>[
               FadeInImage(
                   image: NetworkImage(goods["goodsImg"]),
-                  placeholder: AssetImage("images/imgback.jpg"),
+                  placeholder: AssetImage("images/loading_1.gif"),
                   width: ScreenUtil().setWidth(65),
                   height: ScreenUtil().setWidth(83),
                   fadeInDuration: Duration(milliseconds: 100),

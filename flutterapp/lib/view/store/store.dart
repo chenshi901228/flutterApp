@@ -4,14 +4,31 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../component/store/head.dart';
 import '../../component/classify/tab_item.dart';
 
+import '../../blocs/main_bloc.dart';
+
+bool initStore = true;
+
 class StorePage extends StatefulWidget {
+  final int storeId;
+  const StorePage(this.storeId);
   @override
   _ClassIfyState createState() => new _ClassIfyState();
 }
 
 class _ClassIfyState extends State<StorePage> {
   @override
+  void dispose() {
+    super.dispose();
+    initStore = true;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final bloc = BlocProviderMain.of(context);
+    if (initStore) {
+      initStore = false;
+      bloc.initStore(widget.storeId);
+    }
     ScreenUtil.instance = ScreenUtil(width: 375, height: 667)..init(context);
     return Scaffold(
         backgroundColor: Color.fromRGBO(241, 241, 241, 1),
@@ -78,50 +95,32 @@ class _ClassIfyState extends State<StorePage> {
                 elevation: 1,
               ),
             )),
-        body: ListView(
-          children: <Widget>[
-            new HeadComponent(),
-            Padding(
-              padding: EdgeInsets.all(ScreenUtil().setWidth(7)),
-              child: Wrap(
-                alignment: WrapAlignment.spaceBetween,
-                runSpacing: ScreenUtil().setWidth(7),
-                children: <Widget>[
-                  new TabItemComponent(
-                    name: "祖玛珑香氛蜡烛",
-                  ),
-                  new TabItemComponent(
-                    name:
-                        "祖玛珑乌木与佛手柑香水男士 100ML Jo Malone London祖玛珑乌木与佛手柑香水男士 100ML Jo Malone London  ",
-                  ),
-                  new TabItemComponent(
-                    name: "祖玛珑限量金装英国梨与小苍 兰香水100ML",
-                  ),
-                  new TabItemComponent(
-                    name: "祖玛珑沐浴露250ML系列 蓝 风铃 Jo Malone London ",
-                  ),
-                  new TabItemComponent(
-                    name: "祖玛珑香氛蜡烛200g 全系列 蓝风铃 Jo Malone London",
-                  ),
-                  new TabItemComponent(
-                    name: "祖玛珑香氛蜡烛200g 全系列 蓝风铃 Jo Malone London",
-                  ),
-                  new TabItemComponent(
-                    name: "祖玛珑香氛蜡烛200g 全系列 蓝风铃 Jo Malone London",
-                  ),
-                  new TabItemComponent(
-                    name: "祖玛珑香氛蜡烛200g 全系列 蓝风铃 Jo Malone London",
-                  ),
-                  new TabItemComponent(
-                    name: "祖玛珑香氛蜡烛200g 全系列 蓝风铃 Jo Malone London",
-                  ),
-                  new TabItemComponent(
-                    name: "祖玛珑香氛蜡烛200g 全系列 蓝风铃 Jo Malone London",
-                  ),
-                ],
-              ),
-            )
-          ],
+        body: StreamBuilder(
+          stream: bloc.storestream,
+          initialData: bloc.storeDetails,
+          builder: (context, snapshot) {
+            return ListView(
+              children: <Widget>[
+                new HeadComponent(
+                  data: snapshot.data,
+                ),
+                !snapshot.data.isEmpty
+                    ? Padding(
+                        padding: EdgeInsets.all(ScreenUtil().setWidth(7)),
+                        child: Wrap(
+                          alignment: WrapAlignment.spaceBetween,
+                          runSpacing: ScreenUtil().setWidth(7),
+                          children: snapshot.data["goodsList"].map<Widget>((f) {
+                            return TabItemComponent(
+                              data: f,
+                            );
+                          }).toList(),
+                        ),
+                      )
+                    : SizedBox()
+              ],
+            );
+          },
         ));
   }
 }

@@ -26,7 +26,7 @@ class _GoodsItemState extends State<GoodsItemComponent> {
             height: ScreenUtil().setWidth(120),
             child: FadeInImage(
               image: NetworkImage(goods["goodsImg"]),
-              placeholder: AssetImage("images/imgback.jpg"),
+              placeholder: AssetImage("images/loading_1.gif"),
               fit: BoxFit.fill,
               fadeInDuration: Duration(milliseconds: 100),
               fadeOutDuration: Duration(milliseconds: 100),

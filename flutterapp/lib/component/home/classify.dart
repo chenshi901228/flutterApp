@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'dart:convert';
 
 import '../../utils/routes.dart';
 
@@ -17,9 +18,9 @@ class _ClassifyState extends State<ClassifyComponent> {
     GestureDetector classifyItem(String title) {
       return GestureDetector(
         onTap: () {
-          if (title != "虚位以待") {
-            Routes.router.navigateTo(context, "/classIfyPage");
-          }
+          // 中文转码 fluro不支持参数中文
+          var json = jsonEncode(Utf8Encoder().convert(title));
+          Routes.router.navigateTo(context, "/classIfyPage?classify=$json");
         },
         child: Container(
             width: ScreenUtil().setWidth(68),

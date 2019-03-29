@@ -1,16 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'dart:convert';
+import '../../blocs/main_bloc.dart';
 
 import '../../component/classify/tab_default.dart';
 
+bool initClassify = true;
+
 class ClassIfyPage extends StatefulWidget {
+  final String title;
+  const ClassIfyPage(this.title);
   @override
   _ClassIfyState createState() => new _ClassIfyState();
 }
 
 class _ClassIfyState extends State<ClassIfyPage> {
+  void dispose() {
+    super.dispose();
+    initClassify = true;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProviderMain.of(context);
+
+    ///字符串解码
+    var list = List<int>();
+    jsonDecode(widget.title).forEach(list.add);
+    final String classify = Utf8Decoder().convert(list);
+    if (initClassify) {
+      initClassify = false;
+      bloc.initClassify(classify);
+    }
     ScreenUtil.instance = ScreenUtil(width: 375, height: 667)..init(context);
     return DefaultTabController(
       length: 3,

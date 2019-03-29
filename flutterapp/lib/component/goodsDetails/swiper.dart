@@ -46,7 +46,7 @@ class _SwiperComponentState extends State<SwiperComponent>
                             width: ScreenUtil.screenWidth,
                             child: FadeInImage(
                               image: NetworkImage(f),
-                              placeholder: AssetImage("images/banner.jpg"),
+                              placeholder: AssetImage("images/loading_1.gif"),
                               fit: BoxFit.cover,
                               fadeInDuration: Duration(milliseconds: 100),
                               fadeOutDuration: Duration(milliseconds: 100),

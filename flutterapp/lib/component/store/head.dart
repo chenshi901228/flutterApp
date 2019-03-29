@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HeadComponent extends StatefulWidget {
+  HeadComponent({Key key, this.data}) : super(key: key);
+  final data;
   @override
   _HeadState createState() => new _HeadState();
 }
@@ -16,16 +18,19 @@ class _HeadState extends State<HeadComponent> {
           Container(
             width: ScreenUtil.screenWidth,
             height: ScreenUtil().setWidth(155),
-            child: Image.asset(
-              "images/storeBgm.jpg",
-              fit: BoxFit.fill,
-            ),
+            child: !widget.data.isEmpty
+                ? Image.network(
+                    widget.data["storeBannerImgs"],
+                    fit: BoxFit.fill,
+                  )
+                : Icon(Icons.equalizer),
           ),
           Stack(
             overflow: Overflow.visible,
             children: <Widget>[
               Container(
                   color: Colors.white,
+                  width: ScreenUtil.screenWidth,
                   padding: EdgeInsets.only(
                       top: ScreenUtil().setWidth(35),
                       left: ScreenUtil().setWidth(20),
@@ -38,7 +43,7 @@ class _HeadState extends State<HeadComponent> {
                       });
                     },
                     child: Text(
-                      "英国知名品牌祖·玛珑JO MALONE LONDON，属于雅诗兰黛 集团属于雅诗兰黛 集团属于雅诗兰黛 集团属于雅诗兰黛 集团属于雅诗兰黛 集团属于雅诗兰黛 集团，其香水以简单而纯粹为诸多明星喜爱。质朴的包装，透 露着浓厚的英伦风情。JO MALONE是一家位于伦敦的…",
+                      widget.data["description"] ?? "",
                       maxLines: _maxLines,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
@@ -52,11 +57,13 @@ class _HeadState extends State<HeadComponent> {
                   child: ClipRRect(
                     borderRadius:
                         BorderRadius.circular(ScreenUtil().setWidth(2)),
-                    child: Image.asset(
-                      "images/storeImg.png",
-                      width: ScreenUtil().setWidth(60),
-                      height: ScreenUtil().setWidth(60),
-                    ),
+                    child: !widget.data.isEmpty
+                        ? Image.network(
+                            widget.data["storelogoImg"],
+                            width: ScreenUtil().setWidth(60),
+                            height: ScreenUtil().setWidth(60),
+                          )
+                        : Icon(Icons.equalizer),
                   ))
             ],
           ),

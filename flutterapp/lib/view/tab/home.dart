@@ -121,7 +121,9 @@ class _HomeState extends State<HomePage> with AutomaticKeepAliveClientMixin {
                 );
               },
             ),
-            Text("data"),
+            Image.asset(
+                      "images/loading_1.gif",
+                    ),
             Text("data"),
           ],
         ),

@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../utils/routes.dart';
 
 class TabItemComponent extends StatefulWidget {
-  TabItemComponent({Key key, this.name}) : super(key: key);
-  final name;
+  TabItemComponent({Key key, this.data}) : super(key: key);
+  final data;
   @override
   _TabItemState createState() => new _TabItemState();
 }
@@ -15,7 +15,8 @@ class _TabItemState extends State<TabItemComponent> {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          Routes.router.navigateTo(context, "/goodsDetailsPage");
+          Routes.router.navigateTo(
+              context, "/goodsDetailsPage?goodsId=${widget.data["id"]}");
         },
         child: Column(
           children: <Widget>[
@@ -27,8 +28,8 @@ class _TabItemState extends State<TabItemComponent> {
                   image: DecorationImage(
                       image: AssetImage("images/imgback.jpg"),
                       fit: BoxFit.fill)),
-              child: Image.asset(
-                "images/goods1.jpg",
+              child: Image.network(
+                widget.data["goodsImg"],
                 fit: BoxFit.fill,
               ),
             ),
@@ -41,7 +42,7 @@ class _TabItemState extends State<TabItemComponent> {
                 children: <Widget>[
                   Container(
                     height: ScreenUtil().setWidth(37),
-                    child: Text(widget.name,
+                    child: Text(widget.data["goodsName"],
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -49,7 +50,7 @@ class _TabItemState extends State<TabItemComponent> {
                             color: Color.fromRGBO(51, 51, 51, 1))),
                   ),
                   Text(
-                    "￥200",
+                    "￥${widget.data["price"]}",
                     style: TextStyle(
                         fontSize: ScreenUtil().setSp(14),
                         color: Color.fromRGBO(255, 102, 102, 1)),

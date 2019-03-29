@@ -35,8 +35,9 @@ class _ItemState extends State<ItemComponent> {
           SizedBox(
             width: ScreenUtil().setWidth(10),
           ),
-          Image.network(
-            widget.data["imgUrl"],
+          FadeInImage(
+            image: NetworkImage(widget.data["imgUrl"]),
+            placeholder: AssetImage("images/loading_1.gif"),
             width: ScreenUtil().setWidth(90),
             height: ScreenUtil().setWidth(90),
           ),

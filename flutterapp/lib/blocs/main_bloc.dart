@@ -42,6 +42,21 @@ class MainBLoC {
 
   //==================购物车列表
 
+  // ==================店铺
+  Map _store = {};
+  var _storeBloc = BehaviorSubject<Map>();
+  Stream<Map> get storestream => _storeBloc.stream;
+  Map get storeDetails => _store;
+  // ==================店铺
+
+  // ===================首页分类
+  List _classifyList = [];
+  var _classifyBloc = BehaviorSubject<List>();
+  Stream<List> get classifystream => _classifyBloc.stream;
+  List get classifyList => _classifyList;
+
+  // ===================首页分类
+
   //登录
   void login(params, form, context) async {
     try {
@@ -260,7 +275,6 @@ class MainBLoC {
   }
 
   // 删除购物车商品
-
   void deleteSome(BuildContext context) async {
     List list = _shoppingCartBLOC.value;
     List willDeleteList = list.map((f) {
@@ -279,12 +293,33 @@ class MainBLoC {
     Navigator.pop(context);
   }
 
+  // 店铺初始化
+  void initStore(int storeId) async {
+    print("=====================店铺详情");
+    final res = await HttpUtil()
+        .post("/store/storeDetails", params: {"storeId": storeId});
+    if (res["code"] == 1) {
+      _storeBloc.add(res["list"]);
+    }
+  }
+
+  // 首页分类初始化
+  void initClassify(String title) async {
+    final res = await HttpUtil()
+        .post("/classify/getGoodsList", params: {"classify": title});
+    if (res["code"] == 1) {
+      _classifyBloc.add(res["goodsList"]);
+    }
+  }
+
   void dispose() {
     _subject.close();
     _goods.close();
     _goodsSize.close();
     _shoppingCartBLOC.close();
     _isSelectAllBloc.close();
+    _storeBloc.close();
+    _classifyBloc.close();
   }
 }
 

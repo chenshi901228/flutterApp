@@ -43,7 +43,8 @@ class StoreComponent extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              Routes.router.navigateTo(context, "/storePage");
+              Routes.router.navigateTo(
+                  context, "/storePage?storeId=${data["store_id"]}");
             },
             child: Image.asset(
               "images/icon/goBrand.png",

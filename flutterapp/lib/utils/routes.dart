@@ -58,14 +58,19 @@ class Routes {
     router.define(indexPage,
         handler: Handler(handlerFunc: (context, params) => IndexPage()));
     router.define(classIfyPage,
-        handler: Handler(handlerFunc: (context, params) => ClassIfyPage()));
+        handler: Handler(handlerFunc: (context, params) {
+      var title = params["classify"]?.first;
+      return ClassIfyPage(title);
+    }));
     router.define(goodsDetailsPage,
         handler: Handler(handlerFunc: (context, params) {
       var goodsId = params["goodsId"]?.first;
       return GoodsDetailsPage(int.parse(goodsId));
     }));
-    router.define(storePage,
-        handler: Handler(handlerFunc: (context, params) => StorePage()));
+    router.define(storePage, handler: Handler(handlerFunc: (context, params) {
+      var storeId = params["storeId"]?.first;
+      return StorePage(int.parse(storeId));
+    }));
     router.define(confirmOrderPage,
         handler: Handler(handlerFunc: (context, params) => ConfirmOrderPage()));
     router.define(myAddressPage,

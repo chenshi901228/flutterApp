@@ -28,7 +28,7 @@ class _GuessYourState extends State<GuessYourComponent> {
             children: <Widget>[
               FadeInImage(
                 image: NetworkImage(goods["goodsImg"]),
-                placeholder: AssetImage("images/imgback.jpg"),
+                placeholder: AssetImage("images/loading_1.gif"),
                 width: ScreenUtil().setWidth(177),
                 height: ScreenUtil().setWidth(177),
                 fit: BoxFit.fill,
