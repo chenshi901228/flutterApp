@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/routes.dart';
 
+import '../../blocs/main_bloc.dart';
+
 class BannerDiy extends CustomPainter {
   var _paint = new Paint()
     ..color = Color.fromRGBO(74, 74, 74, 1)
@@ -35,8 +37,31 @@ class BannerDiy extends CustomPainter {
 }
 
 class UserInfoComponent extends StatelessWidget {
+  UserInfoComponent({Key key, this.data}) : super(key: key);
+  final data;
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProviderMain.of(context);
+
+    Widget starBuilder(int length) {
+      List list = [];
+      for (var i = 0; i < length; i++) {
+        list.add(
+          Image.asset(
+            "images/icon/star.png",
+            width: ScreenUtil().setWidth(14),
+            height: ScreenUtil().setWidth(14),
+          ),
+        );
+      }
+      return Wrap(
+        spacing: ScreenUtil().setWidth(3),
+        children: list.map<Widget>((f) {
+          return f;
+        }).toList(),
+      );
+    }
+
     return Stack(
       children: <Widget>[
         Container(
@@ -47,103 +72,100 @@ class UserInfoComponent extends StatelessWidget {
           painter: BannerDiy(),
         ),
         Container(
-          width: ScreenUtil.screenWidth,
-          height: ScreenUtil().setWidth(216),
-          padding: EdgeInsets.only(top: ScreenUtil().setWidth(41)),
-          child: Column(
-            children: <Widget>[
-              Stack(
-                overflow: Overflow.visible,
-                children: <Widget>[
-                  ClipOval(
-                    child: Image.asset(
-                      "images/header_img.jpg",
-                      width: ScreenUtil().setWidth(60),
-                      height: ScreenUtil().setWidth(60),
-                    ),
-                  ),
-                  Positioned(
-                    left: ScreenUtil().setWidth(43),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Color.fromRGBO(245, 166, 35, 1),
-                          borderRadius:
-                              BorderRadius.circular(ScreenUtil().setWidth(1))),
-                      padding: EdgeInsets.symmetric(
-                          horizontal: ScreenUtil().setWidth(3)),
-                      child: Text("领导人",
-                          style: TextStyle(
-                              fontSize: ScreenUtil().setSp(10),
-                              color: Colors.white)),
-                    ),
-                  )
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                    top: ScreenUtil().setWidth(6),
-                    bottom: ScreenUtil().setWidth(2)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+            width: ScreenUtil.screenWidth,
+            height: ScreenUtil().setWidth(216),
+            padding: EdgeInsets.only(top: ScreenUtil().setWidth(41)),
+            child: StreamBuilder(
+              stream: bloc.userInfostream,
+              builder: (context, snaphot) {
+                return Column(
                   children: <Widget>[
-                    Image.asset(
-                      "images/icon/star.png",
-                      width: ScreenUtil().setWidth(14),
-                      height: ScreenUtil().setWidth(14),
+                    Stack(
+                      overflow: Overflow.visible,
+                      children: <Widget>[
+                        ClipOval(
+                            child: data["headImg"] == null
+                                ? Container(
+                                    width: ScreenUtil().setWidth(60),
+                                    height: ScreenUtil().setWidth(60),
+                                    color: Color.fromRGBO(216, 216, 216, 1),
+                                    child: Center(
+                                      child: Text(
+                                        "头像",
+                                        style: TextStyle(
+                                            fontSize: ScreenUtil().setSp(12),
+                                            color:
+                                                Color.fromRGBO(51, 51, 51, 1)),
+                                      ),
+                                    ),
+                                  )
+                                : Image.network(
+                                    data["headImg"],
+                                    width: ScreenUtil().setWidth(60),
+                                    height: ScreenUtil().setWidth(60),
+                                  )),
+                        Positioned(
+                          left: ScreenUtil().setWidth(43),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Color.fromRGBO(245, 166, 35, 1),
+                                borderRadius: BorderRadius.circular(
+                                    ScreenUtil().setWidth(1))),
+                            padding: EdgeInsets.symmetric(
+                                vertical: ScreenUtil().setWidth(1),
+                                horizontal: ScreenUtil().setWidth(3)),
+                            child: Text(data["actor"],
+                                style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(10),
+                                    color: Colors.white)),
+                          ),
+                        )
+                      ],
                     ),
-                    SizedBox(
-                      width: ScreenUtil().setWidth(3),
+                    Padding(
+                        padding: EdgeInsets.only(
+                            top: ScreenUtil().setWidth(6),
+                            bottom: ScreenUtil().setWidth(2)),
+                        child: starBuilder(data["level"])),
+                    Padding(
+                      padding: EdgeInsets.only(top: ScreenUtil().setWidth(2)),
+                      child: Text(
+                        data["nick_name"],
+                        style: TextStyle(
+                            fontSize: ScreenUtil().setSp(12),
+                            color: Colors.white),
+                      ),
                     ),
-                    Image.asset(
-                      "images/icon/star.png",
-                      width: ScreenUtil().setWidth(14),
-                      height: ScreenUtil().setWidth(14),
+                    Padding(
+                      padding: EdgeInsets.only(top: ScreenUtil().setWidth(2)),
+                      child: Text(
+                        "推荐人：${data["referrer"]}",
+                        style: TextStyle(
+                            fontSize: ScreenUtil().setSp(12),
+                            color: Colors.white),
+                      ),
                     ),
-                    SizedBox(
-                      width: ScreenUtil().setWidth(3),
+                    Padding(
+                      padding: EdgeInsets.only(top: ScreenUtil().setWidth(2)),
+                      child: Text(
+                        "邀请码：${data["inviteCode"]}",
+                        style: TextStyle(
+                            fontSize: ScreenUtil().setSp(12),
+                            color: Colors.white),
+                      ),
                     ),
-                    Image.asset(
-                      "images/icon/star.png",
-                      width: ScreenUtil().setWidth(14),
-                      height: ScreenUtil().setWidth(14),
-                    )
+                    Padding(
+                        padding: EdgeInsets.only(top: ScreenUtil().setWidth(2)),
+                        child: Text(
+                          "本月消费：${data["consumptionOfMonth"].runtimeType == int ? data["consumptionOfMonth"].toString() + ".00" : data["consumptionOfMonth"]}",
+                          style: TextStyle(
+                              fontSize: ScreenUtil().setSp(12),
+                              color: Colors.white),
+                        )),
                   ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: ScreenUtil().setWidth(2)),
-                child: Text(
-                  "这里是用户的昵称",
-                  style: TextStyle(
-                      fontSize: ScreenUtil().setSp(12), color: Colors.white),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: ScreenUtil().setWidth(2)),
-                child: Text(
-                  "推荐人：某某某",
-                  style: TextStyle(
-                      fontSize: ScreenUtil().setSp(12), color: Colors.white),
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: ScreenUtil().setWidth(2)),
-                child: Text(
-                  "邀请码：24541",
-                  style: TextStyle(
-                      fontSize: ScreenUtil().setSp(12), color: Colors.white),
-                ),
-              ),
-              Padding(
-                  padding: EdgeInsets.only(top: ScreenUtil().setWidth(2)),
-                  child: Text(
-                    "本月消费：100000.00",
-                    style: TextStyle(
-                        fontSize: ScreenUtil().setSp(12), color: Colors.white),
-                  )),
-            ],
-          ),
-        ),
+                );
+              },
+            )),
         Positioned(
           right: ScreenUtil().setWidth(10),
           top: ScreenUtil().setWidth(33),

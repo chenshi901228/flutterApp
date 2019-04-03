@@ -62,7 +62,7 @@ class RegPageState extends State<RegPage> {
     } else {
       Map params = {"phone": int.parse(phone), "password": passwordFirst};
       try {
-        final data = await HttpUtil().post("/admin/login", params: params);
+        final data = await HttpUtil().post("/admin/reg", params: params);
         if (data["code"] == 1) {
           SharedPreferences preferences = await SharedPreferences.getInstance();
           preferences.setString("token", data["token"]);

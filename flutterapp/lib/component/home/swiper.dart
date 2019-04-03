@@ -16,32 +16,26 @@ class _SwiperComponentState extends State<SwiperComponent>
   int currentPage = 0;
   @override
   Widget build(BuildContext context) {
-    List _this = widget.data ??
-        [
-          {
-            "url":
-                "http://flutterapi.chenshiservice.cn/1552558837402-微信图片_20190314182007.jpg"
-          }
-        ];
-    List<Widget> _swiperItem = _this.map((f) {
-      return Builder(
-        builder: (context) {
-          return Container(
-              width: ScreenUtil.screenWidth,
-              child: FadeInImage(
-                image: NetworkImage(f["url"]),
-                placeholder: AssetImage("images/loading_1.gif"),
-                fit: BoxFit.cover,
-                fadeInDuration: Duration(milliseconds: 100),
-                fadeOutDuration: Duration(milliseconds: 100),
-              ));
-        },
-      );
-    }).toList();
+    List _this = widget.data;
+    // List<Widget> _swiperItem = _this.map((f) {
+    //   return Builder(
+    //     builder: (context) {
+    //       return Container(
+    //           width: ScreenUtil.screenWidth,
+    //           child: FadeInImage(
+    //             image: NetworkImage(f["url"]),
+    //             placeholder: AssetImage("images/loading_1.gif"),
+    //             fit: BoxFit.cover,
+    //             fadeInDuration: Duration(milliseconds: 100),
+    //             fadeOutDuration: Duration(milliseconds: 100),
+    //           ));
+    //     },
+    //   );
+    // }).toList();
 
     List<Widget> pageMap(List list) {
       List<Widget> list = [];
-      for (var i = 0; i < _this.length; i++) {
+      for (var i = 0; i < (_this != null ? _this.length : 1); i++) {
         list.add(Container(
           margin: EdgeInsets.symmetric(
               horizontal: ScreenUtil().setWidth(3),
@@ -72,19 +66,37 @@ class _SwiperComponentState extends State<SwiperComponent>
         height: ScreenUtil().setWidth(154),
         child: Stack(
           children: <Widget>[
-            CarouselSlider(
-              items: _swiperItem,
-              height: ScreenUtil().setWidth(154),
-              viewportFraction: 1.0,
-              autoPlayCurve: Curves.easeIn,
-              autoPlayAnimationDuration: Duration(milliseconds: 300),
-              autoPlay: true,
-              onPageChanged: (int index) {
-                setState(() {
-                  currentPage = index;
-                });
-              },
-            ),
+            _this != null
+                ? CarouselSlider(
+                    items: _this.map<Widget>((f) {
+                      return Builder(
+                        builder: (context) {
+                          return Container(
+                              width: ScreenUtil.screenWidth,
+                              child: FadeInImage(
+                                image: NetworkImage(f["url"]),
+                                placeholder: AssetImage("images/loading_1.gif"),
+                                fit: BoxFit.cover,
+                                fadeInDuration: Duration(milliseconds: 100),
+                                fadeOutDuration: Duration(milliseconds: 100),
+                              ));
+                        },
+                      );
+                    }).toList(),
+                    height: ScreenUtil().setWidth(154),
+                    viewportFraction: 1.0,
+                    autoPlayCurve: Curves.easeIn,
+                    autoPlayAnimationDuration: Duration(milliseconds: 300),
+                    autoPlay: true,
+                    onPageChanged: (int index) {
+                      setState(() {
+                        currentPage = index;
+                      });
+                    },
+                  )
+                : Center(
+                    child: Icon(Icons.equalizer),
+                  ),
             Align(
               alignment: Alignment.bottomCenter,
               child: pagination(),

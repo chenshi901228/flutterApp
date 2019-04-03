@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AssetComponent extends StatelessWidget {
+  AssetComponent({Key key, this.data}) : super(key: key);
+  final data;
   @override
   Widget build(BuildContext context) {
-    Column item(String name) {
+    Column item(String name, text) {
       return Column(
         children: <Widget>[
-          Text("0.00",
+          Text("${text.runtimeType == int ? text.toString() + ".00" : text}",
               style: TextStyle(
                   fontSize: ScreenUtil().setSp(14),
                   color: Color.fromRGBO(255, 102, 102, 1))),
@@ -25,9 +27,9 @@ class AssetComponent extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          item("累计收益(元)"),
-          item("即将到账(元)"),
-          item("账户余额(元)"),
+          item("累计收益(元)", data["accumulatedEarnings"]),
+          item("即将到账(元)", data["willget"]),
+          item("账户余额(元)", data["balanceAccount"]),
         ],
       ),
     );

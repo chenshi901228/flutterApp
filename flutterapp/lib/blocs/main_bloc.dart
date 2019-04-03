@@ -57,6 +57,13 @@ class MainBLoC {
 
   // ===================首页分类
 
+  // ==============我的页面获取用户信息
+  Map _userInfo = {};
+  var _userInfoBloc = BehaviorSubject<Map>();
+  Stream<Map> get userInfostream => _userInfoBloc.stream;
+  Map get userInfo => _userInfo;
+  // ==============我的页面获取用户信息
+
   //登录
   void login(params, form, context) async {
     try {
@@ -86,7 +93,7 @@ class MainBLoC {
             context: context,
             builder: (context) {
               return AlertDialog(
-                content: Text("登录失效，请重新登录"),
+                content: Text(data["msg"]),
               );
             }).then((val) {
           Routes.router.navigateTo(context, "/login");
@@ -113,7 +120,7 @@ class MainBLoC {
             context: context,
             builder: (context) {
               return AlertDialog(
-                content: Text("登录失效，请重新登录"),
+                content: Text(res["msg"]),
               );
             }).then((val) {
           Routes.router.navigateTo(context, "/login");
@@ -197,7 +204,7 @@ class MainBLoC {
             context: context,
             builder: (context) {
               return AlertDialog(
-                content: Text("登录失效，请重新登录"),
+                content: Text(res["msg"]),
               );
             }).then((val) {
           Routes.router.navigateTo(context, "/login");
@@ -305,11 +312,37 @@ class MainBLoC {
 
   // 首页分类初始化
   void initClassify(String title) async {
+    print("=====================分类商品");
     final res = await HttpUtil()
         .post("/classify/getGoodsList", params: {"classify": title});
     if (res["code"] == 1) {
       _classifyBloc.add(res["goodsList"]);
     }
+  }
+
+  // 获取用户信息
+  void getUserInfo() async {
+    print("===================我的");
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    final userId = preferences.getString("userId");
+    final res = await HttpUtil()
+        .post("/admin/userInfo", params: {"userId": int.parse(userId)});
+    if (res["code"] == 1) {
+      _userInfoBloc.add(res["userInfo"]);
+    } else {}
+  }
+
+  // 修改昵称
+  void editNickName(BuildContext context, String nickName) async {
+    Map userInfo = _userInfoBloc.value;
+    userInfo["nick_name"] = nickName;
+    _userInfoBloc.add(userInfo);
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    final userId = preferences.getString("userId");
+    final res = await HttpUtil().post("/admin/editNickName",
+        params: {"userId": int.parse(userId), "nick_name": nickName});
+    print(res);
+    Navigator.pop(context);
   }
 
   void dispose() {
@@ -320,6 +353,7 @@ class MainBLoC {
     _isSelectAllBloc.close();
     _storeBloc.close();
     _classifyBloc.close();
+    _userInfoBloc.close();
   }
 }
 
