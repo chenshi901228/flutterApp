@@ -35,6 +35,7 @@ class _OrderState extends State<OrderPage> {
           preferredSize: Size.fromHeight(ScreenUtil().setWidth(90)),
           child: AppBar(
             backgroundColor: Colors.white,
+            brightness: Brightness.light,
             elevation: 0,
             leading: Builder(
               builder: (BuildContext context) {

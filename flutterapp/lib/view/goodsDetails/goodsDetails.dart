@@ -93,6 +93,7 @@ class _GoodsDetailsState extends State<GoodsDetailsPage> {
         slivers: <Widget>[
           SliverAppBar(
             pinned: true,
+            brightness: Brightness.light,
             elevation: 1,
             title: AnimatedOpacity(
               duration: Duration(milliseconds: 300),
@@ -158,42 +159,35 @@ class _GoodsDetailsState extends State<GoodsDetailsPage> {
             builder: (context, snapshot) {
               final _this = snapshot.data;
               return SliverList(
-                delegate: SliverChildBuilderDelegate((context, int index) {
-                  if (index == 0) {
-                    return StreamBuilder(
-                      stream: blocMain.goodsSizestream,
-                      initialData: blocMain.goodsSizeChoice,
-                      builder: (context, snapshot) {
-                        return new HeadComponent(
-                          data: {
-                            "price": snapshot.data["price"] != null
-                                ? snapshot.data["price"]
-                                : _this["price"],
-                            "goodsName": _this["goodsName"]
-                          },
-                        );
-                      },
-                    );
-                  } else if (index == 1) {
-                    return new SaleComponent(
-                      data: _this,
-                    );
-                  } else if (index == 2) {
-                    return new StoreComponent(
-                      data: _this,
-                    );
-                  } else if (index == 3) {
-                    return _this["goodsimgs"] != null
-                        ? Column(
-                            children: _this["goodsimgs"].map<Widget>((f) {
-                              return Image.network(f);
-                            }).toList(),
-                          )
-                        : SizedBox();
-                  } else {
-                    return null;
-                  }
-                }),
+                delegate: SliverChildListDelegate([
+                  StreamBuilder(
+                    stream: blocMain.goodsSizestream,
+                    initialData: blocMain.goodsSizeChoice,
+                    builder: (context, snapshot) {
+                      return new HeadComponent(
+                        data: {
+                          "price": snapshot.data["price"] != null
+                              ? snapshot.data["price"]
+                              : _this["price"],
+                          "goodsName": _this["goodsName"]
+                        },
+                      );
+                    },
+                  ),
+                  SaleComponent(
+                    data: _this,
+                  ),
+                  StoreComponent(
+                    data: _this,
+                  ),
+                  _this["goodsimgs"] != null
+                      ? Column(
+                          children: _this["goodsimgs"].map<Widget>((f) {
+                            return Image.network(f);
+                          }).toList(),
+                        )
+                      : SizedBox(),
+                ]),
               );
             },
           )

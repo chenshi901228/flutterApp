@@ -43,6 +43,7 @@ class _ClassIfyState extends State<ClassIfyPage> {
               top: true,
               child: AppBar(
                 backgroundColor: Colors.white,
+                brightness: Brightness.light,
                 automaticallyImplyLeading: false,
                 // leading: Builder(
                 //   builder: (BuildContext context) {

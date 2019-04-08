@@ -41,6 +41,7 @@ class _HomeState extends State<HomePage> with AutomaticKeepAliveClientMixin {
               top: true,
               child: AppBar(
                 backgroundColor: Colors.white,
+                brightness: Brightness.light,
                 leading: Padding(
                     padding: EdgeInsets.only(
                         top: ScreenUtil().setWidth(12),

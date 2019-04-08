@@ -38,6 +38,7 @@ class _ClassIfyState extends State<StorePage> {
               top: true,
               child: AppBar(
                 backgroundColor: Colors.white,
+                brightness: Brightness.light,
                 automaticallyImplyLeading: false,
                 title: Row(
                   children: <Widget>[

@@ -197,6 +197,7 @@ class _ShoppingCartState extends State<ShoppingCartPage>
         child: AppBar(
           elevation: 1,
           backgroundColor: Colors.white,
+          brightness: Brightness.light,
           centerTitle: true,
           automaticallyImplyLeading: false,
           title: Text(

@@ -11,6 +11,7 @@ class HeadComponent extends StatelessWidget {
       padding: EdgeInsets.all(ScreenUtil().setWidth(10)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Text(
             "￥${data["price"] ?? 0.00}",
@@ -18,10 +19,9 @@ class HeadComponent extends StatelessWidget {
                 fontSize: ScreenUtil().setSp(16),
                 color: Color.fromRGBO(255, 102, 102, 1)),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(
-                horizontal: ScreenUtil().setWidth(10),
-                vertical: ScreenUtil().setWidth(8)),
+          Container(
+            height: ScreenUtil().setWidth(40),
+            padding: EdgeInsets.only(left: ScreenUtil().setWidth(20)),
             child: Text(
               data["goodsName"] ?? "",
               maxLines: 2,

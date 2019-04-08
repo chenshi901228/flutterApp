@@ -40,6 +40,7 @@ class _MyAddressState extends State<MyAddressPage> {
           preferredSize: Size.fromHeight(ScreenUtil().setWidth(44)),
           child: AppBar(
             backgroundColor: Colors.white,
+            brightness: Brightness.light,
             elevation: 0,
             centerTitle: true,
             leading: Builder(
