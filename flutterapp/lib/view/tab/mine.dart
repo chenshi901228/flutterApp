@@ -56,7 +56,7 @@ class _MineState extends State<MinePage> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text("正在努力刷新数据！！！")
+                    Text("数据加载中！！！")
                   ],
                 ),
               );

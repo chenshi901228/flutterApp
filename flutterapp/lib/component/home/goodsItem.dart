@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/routes.dart';
+import '../../model/loading.dart';
 
 class GoodsItemComponent extends StatefulWidget {
   GoodsItemComponent({Key key, this.title = "", this.data}) : super(key: key);
@@ -26,7 +27,7 @@ class _GoodsItemState extends State<GoodsItemComponent> {
             height: ScreenUtil().setWidth(120),
             child: FadeInImage(
               image: NetworkImage(goods["goodsImg"]),
-              placeholder: AssetImage("images/loading_1.gif"),
+              placeholder: AssetImage(Common.loadImg),
               fit: BoxFit.fill,
               fadeInDuration: Duration(milliseconds: 100),
               fadeOutDuration: Duration(milliseconds: 100),

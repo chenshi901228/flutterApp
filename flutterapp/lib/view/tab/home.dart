@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../component/home/tabItem1.dart';
 
 import '../../blocs/main_bloc.dart';
-
+import '../../model/loading.dart';
 
 bool initHome = true;
 
@@ -16,9 +16,10 @@ class _HomeState extends State<HomePage> with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
 
-  void initState(){
+  void initState() {
     super.initState();
   }
+
   void dispose() {
     super.dispose();
     initHome = true;
@@ -117,14 +118,27 @@ class _HomeState extends State<HomePage> with AutomaticKeepAliveClientMixin {
               stream: blocMain.stream,
               initialData: blocMain.value,
               builder: (context, snapshot) {
-                return TabItem1Component(
-                  data: snapshot.data,
-                );
+                return snapshot.data != null
+                    ? TabItem1Component(
+                        data: snapshot.data,
+                      )
+                    : Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            CircularProgressIndicator(),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text("数据加载中！！！")
+                          ],
+                        ),
+                      );
               },
             ),
             Image.asset(
-                      "images/loading_1.gif",
-                    ),
+              Common.loadImg,
+            ),
             Text("data"),
           ],
         ),

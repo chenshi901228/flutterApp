@@ -69,10 +69,10 @@ class _IndexState extends State<IndexPage> {
       ),
       bottomNavigationBar: BottomAppBar(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(40)),
+          // padding: EdgeInsets.symmetric(horizontal: ScreenUtil().setWidth(40)),
           height: ScreenUtil().setWidth(49),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               _tabIndex == 0
                   ? bottomButton("images/icon/home.png", "首页", 0,

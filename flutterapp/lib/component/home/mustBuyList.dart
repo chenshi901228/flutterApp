@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/routes.dart';
+import '../../model/loading.dart';
 
 class MustBuyComponent extends StatefulWidget {
   MustBuyComponent({Key key, this.data}) : super(key: key);
@@ -36,7 +37,7 @@ class _MustBuyState extends State<MustBuyComponent>
             children: <Widget>[
               FadeInImage(
                   image: NetworkImage(goods["goodsImg"]),
-                  placeholder: AssetImage("images/loading_1.gif"),
+                  placeholder: AssetImage(Common.loadImg),
                   width: ScreenUtil().setWidth(65),
                   height: ScreenUtil().setWidth(83),
                   fadeInDuration: Duration(milliseconds: 100),

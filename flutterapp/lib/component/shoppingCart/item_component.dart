@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../blocs/main_bloc.dart';
 
+import '../../model/loading.dart';
+
 class ItemComponent extends StatefulWidget {
   ItemComponent({Key key, this.data}) : super(key: key);
   final data;
@@ -37,7 +39,7 @@ class _ItemState extends State<ItemComponent> {
           ),
           FadeInImage(
             image: NetworkImage(widget.data["imgUrl"]),
-            placeholder: AssetImage("images/loading_1.gif"),
+            placeholder: AssetImage(Common.loadImg),
             width: ScreenUtil().setWidth(90),
             height: ScreenUtil().setWidth(90),
           ),

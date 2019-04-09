@@ -37,7 +37,7 @@ class _PersonalDataState extends State<PersonalDataPage> {
         context: context,
         builder: (context) {
           return Container(
-            height: ScreenUtil().setWidth(101),
+            height: ScreenUtil().setWidth(130),
             child: Column(
               children: <Widget>[
                 GestureDetector(
@@ -50,7 +50,7 @@ class _PersonalDataState extends State<PersonalDataPage> {
                     width: ScreenUtil.screenWidth,
                     color: Colors.transparent,
                     padding: EdgeInsets.symmetric(
-                        vertical: ScreenUtil().setWidth(6)),
+                        vertical: ScreenUtil().setWidth(10)),
                     child: Text("拍照"),
                   ),
                 ),
@@ -70,7 +70,7 @@ class _PersonalDataState extends State<PersonalDataPage> {
                     width: ScreenUtil.screenWidth,
                     color: Colors.transparent,
                     padding: EdgeInsets.symmetric(
-                        vertical: ScreenUtil().setWidth(6)),
+                        vertical: ScreenUtil().setWidth(10)),
                     child: Text("从手机相册选择"),
                   ),
                 ),
@@ -89,7 +89,7 @@ class _PersonalDataState extends State<PersonalDataPage> {
                     width: ScreenUtil.screenWidth,
                     color: Colors.transparent,
                     padding: EdgeInsets.symmetric(
-                        vertical: ScreenUtil().setWidth(6)),
+                        vertical: ScreenUtil().setWidth(10)),
                     child: Text("取消"),
                   ),
                 ),

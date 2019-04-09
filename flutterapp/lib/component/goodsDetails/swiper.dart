@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
+import '../../model/loading.dart';
+
 class SwiperComponent extends StatefulWidget {
   SwiperComponent({Key key, this.data}) : super(key: key);
   final data;
@@ -46,7 +48,7 @@ class _SwiperComponentState extends State<SwiperComponent>
                             width: ScreenUtil.screenWidth,
                             child: FadeInImage(
                               image: NetworkImage(f),
-                              placeholder: AssetImage("images/loading_1.gif"),
+                              placeholder: AssetImage(Common.loadImg),
                               fit: BoxFit.cover,
                               fadeInDuration: Duration(milliseconds: 100),
                               fadeOutDuration: Duration(milliseconds: 100),

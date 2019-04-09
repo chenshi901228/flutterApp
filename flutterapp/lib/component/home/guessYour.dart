@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../utils/routes.dart';
+import '../../model/loading.dart';
 
 class GuessYourComponent extends StatefulWidget {
   GuessYourComponent({Key key, this.data}) : super(key: key);
@@ -28,7 +29,7 @@ class _GuessYourState extends State<GuessYourComponent> {
             children: <Widget>[
               FadeInImage(
                 image: NetworkImage(goods["goodsImg"]),
-                placeholder: AssetImage("images/loading_1.gif"),
+                placeholder: AssetImage(Common.loadImg),
                 width: ScreenUtil().setWidth(177),
                 height: ScreenUtil().setWidth(177),
                 fit: BoxFit.fill,
