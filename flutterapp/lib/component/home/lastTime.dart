@@ -67,7 +67,6 @@ class _LastTimeState extends State<LastTimeComponent>
       padding: EdgeInsets.only(
           top: ScreenUtil().setWidth(8), bottom: ScreenUtil().setWidth(5)),
       color: Color.fromRGBO(238, 238, 238, 1),
-      // height: ScreenUtil().setWidth(100),
       child: Column(
         children: <Widget>[
           Text(
@@ -77,7 +76,7 @@ class _LastTimeState extends State<LastTimeComponent>
                 color: Color.fromRGBO(155, 155, 155, 1)),
           ),
           Text(
-            lastTimeShow.toString() ?? "00:00:00",
+            lastTimeShow != null ? lastTimeShow.toString() : "00:00:00",
             style: TextStyle(
                 fontSize: ScreenUtil().setSp(36),
                 color: Color.fromRGBO(255, 77, 0, 1)),

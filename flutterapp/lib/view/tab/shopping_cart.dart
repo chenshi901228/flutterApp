@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../component/shoppingCart/item_component.dart';
 
 import '../../blocs/main_bloc.dart';
+import '../../utils/event_bus.dart';
+import '../../type/eventModel.dart';
 
 bool shoppingCartInit = true;
 
@@ -18,6 +20,7 @@ class _ShoppingCartState extends State<ShoppingCartPage>
   bool get wantKeepAlive => true;
   String _headerRightTest = "管理";
   bool _clearOrDelete = true;
+  bool _loading = true;
 
   clearOrDeleteFuc(String text) {
     setState(() {
@@ -130,6 +133,17 @@ class _ShoppingCartState extends State<ShoppingCartPage>
     );
   }
 
+  void initState() {
+    eventBus.on<HttpEvent>().listen((event) {
+      if (mounted) {
+        setState(() {
+          _loading = false;
+        });
+      }
+    });
+    super.initState();
+  }
+
   void dispose() {
     super.dispose();
     shoppingCartInit = true;
@@ -233,16 +247,32 @@ class _ShoppingCartState extends State<ShoppingCartPage>
         stream: bloc.shoppingCartstream,
         initialData: bloc.shoppingCartList,
         builder: (context, snapshot) {
-          return snapshot.data != null
-              ? ListView(
-                  padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(10)),
-                  children: snapshot.data.map<Widget>((item) {
-                    return new ItemComponent(
-                      data: item,
-                    );
-                  }).toList(),
+          return _loading
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      CircularProgressIndicator(),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text("数据加载中！！！")
+                    ],
+                  ),
                 )
-              : SizedBox();
+              : snapshot.data.isNotEmpty
+                  ? ListView(
+                      padding:
+                          EdgeInsets.only(bottom: ScreenUtil().setWidth(10)),
+                      children: snapshot.data.map<Widget>((item) {
+                        return new ItemComponent(
+                          data: item,
+                        );
+                      }).toList(),
+                    )
+                  : Center(
+                      child: Text("您的购物车为空！！！"),
+                    );
         },
       ),
       bottomNavigationBar: BottomAppBar(

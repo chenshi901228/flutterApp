@@ -6,6 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/httpRequest.dart';
 import '../utils/routes.dart';
+import '../utils/event_bus.dart';
+import '../type/eventModel.dart';
 
 class MainBLoC {
   // ==============首页初始化数据
@@ -199,6 +201,7 @@ class MainBLoC {
           return f;
         }).toList();
         _shoppingCartBLOC.add(list);
+        eventBus.fire(HttpEvent(false));
       } else {
         showDialog<Null>(
             context: context,
@@ -325,11 +328,15 @@ class MainBLoC {
     print("===================我的");
     SharedPreferences preferences = await SharedPreferences.getInstance();
     final userId = preferences.getString("userId");
-    final res = await HttpUtil()
-        .post("/admin/userInfo", params: {"userId": int.parse(userId)});
-    if (res["code"] == 1) {
-      _userInfoBloc.add(res["userInfo"]);
-    } else {}
+    try {
+      final res = await HttpUtil()
+          .post("/admin/userInfo", params: {"userId": int.parse(userId)});
+      if (res["code"] == 1) {
+        _userInfoBloc.add(res["userInfo"]);
+      } else {}
+    } catch (err) {
+      print(err);
+    }
   }
 
   // 修改昵称

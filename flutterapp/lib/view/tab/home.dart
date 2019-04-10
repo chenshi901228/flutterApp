@@ -118,7 +118,7 @@ class _HomeState extends State<HomePage> with AutomaticKeepAliveClientMixin {
               stream: blocMain.stream,
               initialData: blocMain.value,
               builder: (context, snapshot) {
-                return snapshot.data != null
+                return snapshot.data.isNotEmpty
                     ? TabItem1Component(
                         data: snapshot.data,
                       )

@@ -44,7 +44,6 @@ class _ClassifyState extends State<ClassifyComponent> {
 
     return Container(
         color: Colors.white,
-        // height: ScreenUtil().setHeight(186),
         padding: EdgeInsets.symmetric(
             vertical: ScreenUtil().setWidth(20),
             horizontal: ScreenUtil().setWidth(20)),

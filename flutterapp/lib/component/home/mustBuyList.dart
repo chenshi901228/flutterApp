@@ -94,7 +94,7 @@ class _MustBuyState extends State<MustBuyComponent>
       height: ScreenUtil().setWidth(158),
       child: Column(
         children: <Widget>[
-          Container(
+          Padding(
             padding: EdgeInsets.only(bottom: ScreenUtil().setWidth(10)),
             child: Text("必买好货",
                 style: TextStyle(
