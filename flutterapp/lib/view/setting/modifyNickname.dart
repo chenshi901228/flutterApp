@@ -9,7 +9,6 @@ class ModifyNicknamePage extends StatefulWidget {
 }
 
 class _ModifyNicknameState extends State<ModifyNicknamePage> {
-  String _nick_name = "";
   @override
   Widget build(BuildContext context) {
     final bloc = BlocProviderMain.of(context);

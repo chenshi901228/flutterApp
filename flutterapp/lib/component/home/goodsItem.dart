@@ -35,33 +35,35 @@ class _GoodsItemState extends State<GoodsItemComponent> {
       );
     }
 
-    return Column(
-      children: <Widget>[
-        widget.title != ""
-            ? Container(
-                width: ScreenUtil.screenWidth,
-                alignment: Alignment.center,
-                color: Color.fromRGBO(243, 243, 243, 1),
-                padding: EdgeInsets.only(
-                    top: ScreenUtil().setWidth(10),
-                    bottom: ScreenUtil().setWidth(2)),
-                child: Text(
-                  widget.title,
-                  style: TextStyle(fontSize: ScreenUtil().setSp(14)),
-                ),
-              )
-            : SizedBox(),
-        Container(
-            color: Color.fromRGBO(243, 243, 243, 1),
-            width: ScreenUtil.screenWidth,
-            padding: EdgeInsets.all(ScreenUtil().setWidth(8)),
-            child: Wrap(
-                alignment: WrapAlignment.spaceBetween,
-                runSpacing: ScreenUtil().setWidth(3),
-                children: _this.map((f) {
-                  return good(f);
-                }).toList()))
-      ],
+    return Container(
+      child: Column(
+        children: <Widget>[
+          widget.title != ""
+              ? Container(
+                  width: ScreenUtil.screenWidth,
+                  alignment: Alignment.center,
+                  color: Color.fromRGBO(243, 243, 243, 1),
+                  padding: EdgeInsets.only(
+                      top: ScreenUtil().setWidth(10),
+                      bottom: ScreenUtil().setWidth(2)),
+                  child: Text(
+                    widget.title,
+                    style: TextStyle(fontSize: ScreenUtil().setSp(14)),
+                  ),
+                )
+              : SizedBox(),
+          Container(
+              color: Color.fromRGBO(243, 243, 243, 1),
+              width: ScreenUtil.screenWidth,
+              padding: EdgeInsets.all(ScreenUtil().setWidth(8)),
+              child: Wrap(
+                  alignment: WrapAlignment.spaceBetween,
+                  runSpacing: ScreenUtil().setWidth(3),
+                  children: _this.map((f) {
+                    return good(f);
+                  }).toList()))
+        ],
+      ),
     );
   }
 }

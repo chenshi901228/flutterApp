@@ -5,7 +5,6 @@ import 'dart:async';
 import 'dart:io';
 import '../../utils/routes.dart';
 
-import '../../utils/httpRequest.dart';
 import '../../blocs/main_bloc.dart';
 
 class PersonalDataPage extends StatefulWidget {
