@@ -2,6 +2,8 @@
 
 A new Flutter project.
 
+第二个flutterApp，用于更深入熟悉flutter。
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
