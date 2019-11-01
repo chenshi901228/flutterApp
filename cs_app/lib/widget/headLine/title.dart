@@ -55,7 +55,7 @@ class _HeadLineTitleState extends State<HeadLineTitle> {
           scrollDirection: Axis.vertical,
           height: ScreenUtil().setWidth(30),
           autoPlay: true,
-          dragable: false,
+          // dragable: false,
           viewportFraction: 1.0,
           items: _titleList.map((f) {
             return _titleSwiperItem(f);
