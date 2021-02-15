@@ -23,7 +23,7 @@ import '../view/myAddress/addAddress.dart'; //添加新地址
 import '../view/myAddress/editAddress.dart'; //编辑收货地址
 
 class Routes {
-  static Router router;
+  static FluroRouter router;
   static String indexPage = '/';
   static String loginPage = "/login";
   static String forgetPassWordPage = '/forgetPassWordPage';
@@ -47,7 +47,7 @@ class Routes {
   static String addAddressPage = '/addAddressPage';
   static String editAddressPage = '/editAddressPage';
 
-  static void configureRoutes(Router router) {
+  static void configureRoutes(FluroRouter router) {
     router.define(loginPage,
         handler: Handler(handlerFunc: (context, params) => Login()));
     router.define(forgetPassWordPage,

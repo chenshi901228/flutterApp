@@ -4,7 +4,7 @@ import './utils/routes.dart';
 import 'blocs/main_bloc.dart';
 
 void main() {
-  final router = new Router();
+  final router = FluroRouter();
   Routes.configureRoutes(router);
   runApp(MyApp());
 }

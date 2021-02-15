@@ -15,7 +15,7 @@ class SaleComponent extends StatefulWidget {
 class _SaleState extends State<SaleComponent> {
   void chooseSizeFuc() {
     showModalBottomSheet(
-        barrierDismissible_cs: false,
+        // barrierDismissible_cs: false,
         context: context,
         builder: (context) {
           return Modal(

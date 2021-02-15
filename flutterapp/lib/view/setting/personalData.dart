@@ -32,7 +32,7 @@ class _PersonalDataState extends State<PersonalDataPage> {
 
   void wayOfImagePick() {
     showModalBottomSheet(
-        barrierDismissible_cs: false,
+        // barrierDismissible_cs: false,
         context: context,
         builder: (context) {
           return Container(
