@@ -80,7 +80,7 @@ class _HomeState extends State<HomePage> with AutomaticKeepAliveClientMixin {
                                   border: InputBorder.none)),
                           Positioned(
                             left: ScreenUtil().setWidth(10),
-                            top: ScreenUtil().setWidth(6),
+                            top: ScreenUtil().setWidth(16),
                             child: Image.asset(
                               "images/icon/serch.png",
                               width: ScreenUtil().setWidth(20),

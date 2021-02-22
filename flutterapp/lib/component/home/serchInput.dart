@@ -26,7 +26,7 @@ class SerchInputPage extends StatelessWidget {
                           style: TextStyle(
                               color: Color.fromRGBO(155, 155, 155, 1)),
                           decoration: InputDecoration(
-                              hintText: "搜你喜欢的",
+                              hintText: "搜你喜欢的!!",
                               hintStyle: TextStyle(
                                   fontSize: ScreenUtil().setSp(12),
                                   color: Color.fromRGBO(155, 155, 155, 1)),
@@ -37,7 +37,7 @@ class SerchInputPage extends StatelessWidget {
                               border: InputBorder.none)),
                       Positioned(
                         left: ScreenUtil().setWidth(10),
-                        top: ScreenUtil().setWidth(6),
+                        top: ScreenUtil().setWidth(16),
                         child: Image.asset(
                           "images/icon/serch.png",
                           width: ScreenUtil().setWidth(20),

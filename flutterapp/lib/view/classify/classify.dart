@@ -102,7 +102,7 @@ class _ClassIfyState extends State<ClassIfyPage> {
                                       border: InputBorder.none)),
                               Positioned(
                                 left: ScreenUtil().setWidth(10),
-                                top: ScreenUtil().setHeight(6),
+                                top: ScreenUtil().setHeight(14),
                                 child: Image.asset(
                                   "images/icon/serch.png",
                                   width: ScreenUtil().setWidth(18),
